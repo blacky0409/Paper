@@ -1,0 +1,21 @@
+\section{Related Work} %{{{
+\label{s:related}
+
+Many studies have attempted to address fragmentation. 
+To resolve fragmentation, it is necessary to either prevent its occurrence (related papers) or convert fragmented files into contiguous files to restore file access performance (related papers).
+Despite these efforts, fragmentation continues to pose problems. As a result, researchers age SSDs to create an environment similar to that of SSDs used in real-life scenarios before conducting their studies. 
+Numerous studies have been conducted for this purpose, and various tools are available.
+
+The Git workload\cite{conway2017fragment} can measure aging in a real-world environment that people commonly use.
+Git is a distributed version control system that allows synchronization of source code changes.
+It generates workloads by simulating developers working on collaborative projects using Git. 
+Experiments are conducted using the git pull command, which creates new source files, deletes old files, or modifies files. During this process, Git maintains its internal data structure, leading to filesystem aging.
+To measure the extent of aging, multiple git pull commands can be executed, and latency can be measured through reads using grep.
+
+Geriatrix\cite{Before_utilizer_Geriatrix} is an aging tool that, unlike previous studies, induces fragmentation not only in allocated files but also in remaining free space.
+Previous aging tools only targeted fragmentation in allocated files. 
+Consequently, earlier approaches failed to adequately reproduce the effects of free space fragmentation and device aging on the SSD's filesystem.
+However, Geriatrix can effectively reproduce these conditions.
+
+Such aging tools have created an environment where researchers can easily replicate SSDs in real-life scenarios.
+However, these aging processes can take anywhere from a few weeks to several months, and this wasted time is critical for research.
