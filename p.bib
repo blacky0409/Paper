@@ -180,4 +180,46 @@ keywords = {Storage system, deduplication, file system, file system performance,
  title = {How to fragment your file system},
  year = {2017}
 }
+@INPROCEEDINGS{Survey,
+  author={Lee, Sangjin and Nguyen, Lan Anh and Yeo, Hyeongi and Kim, Sunggon and Cho, Sungrae and Son, Yongseok},
+  booktitle={2023 14th International Conference on Information and Communication Technology Convergence (ICTC)}, 
+  title={A Survey on File Defragmentation Techniques on Modern Storage Systems}, 
+  year={2023},
+  volume={},
+  number={},
+  pages={785-787},
+  keywords={Surveys;Performance evaluation;Degradation;File systems;Tail;Aging;Throughput;Fragmentation;File system aging;Defragmentation},
+  doi={10.1109/ICTC58733.2023.10393099}
+}
+@inproceedings {Gardening,
+author = {Ram Kesavan and Matthew Curtis-Maury and Vinay Devadas and Kesari Mishra},
+title = {Storage Gardening: Using a Virtualization Layer for Efficient Defragmentation in the {WAFL} File System},
+booktitle = {17th USENIX Conference on File and Storage Technologies (FAST 19)},
+year = {2019},
+isbn = {978-1-939133-09-0},
+address = {Boston, MA},
+pages = {65--78},
+url = {https://www.usenix.org/conference/fast19/presentation/kesavan},
+publisher = {USENIX Association},
+month = feb
+}
+
+@inproceedings{IO,
+author = {Park, Jonggyu and Eom, Young Ik},
+title = {File fragmentation from the perspective of I/O control},
+year = {2022},
+isbn = {9781450393997},
+publisher = {Association for Computing Machinery},
+address = {New York, NY, USA},
+url = {https://doi.org/10.1145/3538643.3539746},
+doi = {10.1145/3538643.3539746},
+abstract = {File fragmentation has been widely studied for several decades due to its detrimental effects on I/O activities. However, most of the previous research focuses on its performance aspect in a single application. In this paper, we analyze the effect of fragmentation on I/O control in a consolidated system where multiple applications run simultaneously. Our evaluation demonstrates that all of the weight-based I/O control mechanisms supported by the Linux kernel fail to achieve fair I/O sharing for different reasons when they meet fragmentation. Also, we show that defragmentation can promptly antidote such failures by preventing request splitting and device-level resource conflicts.},
+booktitle = {Proceedings of the 14th ACM Workshop on Hot Topics in Storage and File Systems},
+pages = {126–132},
+numpages = {7},
+keywords = {I/O control, cgroups, file fragmentation},
+location = {Virtual Event},
+series = {HotStorage '22}
+}
+
 %}}}
