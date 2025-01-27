@@ -15,41 +15,41 @@
  Fragmentation increases the overhead by requiring the disk head to move more frequently, particularly having a pronounced negative impact on read operations.
 
 \noindent {\textbf{Filesystem Fragmentation in SSDs.}} In flash memory, there is no seek time or rotational latency, so early researchers generally argued that SSD performance is not affected by filesystem fragmentation.
-Therefore, techniques like defragmentation were thought to have only negative impacts by reducing the lifespan of flash memory due to additional write operations.\cite{Defragmentation_mobile,Defragmentation_FragPicker,Defragmentation_Log_write_is_ssd_to_bad,Defragmentation_nofile,Defragmentation_parallel_file_scheme,Defragmentation_read_collision}
-However, recent studies have shown that filesystem aging and resultant fragmentation can also lead to performance degradation in SSDs.\cite{Problem_in_SSD_Empirical,Problem_in_SSD_Senescence,Problem_in_SSD_Mobile_Devices,Survey}
+Therefore, techniques like defragmentation were thought to have only negative impacts by reducing the lifespan of flash memory due to additional write operations.\cite{Defragmentation_mobile,fragpicker:sosp21,Defragmentation_Log_write_is_ssd_to_bad,Defragmentation_nofile,Defragmentation_parallel_file_scheme,Defragmentation_read_collision}
+However, recent studies have shown that filesystem aging and resultant fragmentation can also lead to performance degradation in SSDs.\cite{Problem_in_SSD_Empirical,Problem_in_SSD_Senescence,Problem_in_SSD_Mobile_Devices,survey:ictc23}
 
 The first reason for this is request fragmentation.
-In the Linux I/O stack, a single I/O request can only represent contiguous LBA (Logical Block Address). 
-Fragmentation influences the non-contiguous storage of data, causing a single I/O request to be divided into multiple smaller I/O requests.\cite{IO} 
+In the Linux I/O stack, a single I/O request can only represent contiguous LBA (Logical Block Address).
+Fragmentation influences the non-contiguous storage of data, causing a single I/O request to be divided into multiple smaller I/O requests.\cite{IO}
 This increases the total number of I/O requests, and all requests derived from a single I/O must be completed before the next process can proceed, leading to issues in I/O performance.
 If multiple I/O requests are necessary for one file, the system must generate bio structures, request structures, and I/O commands corresponding to the number of requests. This process incurs overhead in I/O request management.
 
-Secondly, SSDs enhance read performance through prefetching, which loads subsequent data in advance based on LBA. 
+Secondly, SSDs enhance read performance through prefetching, which loads subsequent data in advance based on LBA.
 Fragmentation can cause this prefetching to load unnecessary data.\cite{Defragmentation_Log_write_is_ssd_to_bad} For these reasons, filesystem fragmentation is also a concern in SSDs.
 
 \noindent {\textbf{Logical Fragmentation and Physical Fragmentation.}} I/O performance in flash storage is affected in different ways by logical fragmentation and physical fragmentation.\cite{Logical_Fragmentation_vs_physical_Fragmentation}
 Logical fragmentation occurs when files are allocated in multiple fragmented storage spaces (extents) within the filesystem.
-When a file is not stored contiguously and is spread across various locations, the filesystem recognizes this as being in a logically fragmented state. 
+When a file is not stored contiguously and is spread across various locations, the filesystem recognizes this as being in a logically fragmented state.
 As a result, more I/O requests are needed to read the file, which increases overhead in I/O scheduling and handshaking processes.
 
 On the other hand, physical fragmentation happens when the data of a file is allocated non-contiguously at the physical locations of the storage device.
-In flash storage, data can be distributed across multiple channels, which directly impacts I/O parallelism. 
-This can lead to a degradation in I/O performance. 
-Even if the Physical Block Address (PBA) is contiguous, if the Logical Block Address (LBA) is non-contiguous, separate I/O requests become necessary. 
+In flash storage, data can be distributed across multiple channels, which directly impacts I/O parallelism.
+This can lead to a degradation in I/O performance.
+Even if the Physical Block Address (PBA) is contiguous, if the Logical Block Address (LBA) is non-contiguous, separate I/O requests become necessary.
 This increases the number of I/O requests, which can lower the overall performance of the system.
 Therefore, logical fragmentation and physical fragmentation can occur independently, and appropriate measures are needed to address each issue.
 
 \subsection{FTL}
 Programs based on the filesystem of a typical operating system recognize disks on a sector basis.
 However, in the case of SSDs, storage units are implemented based on pages and blocks.
-This means that sector-based programs cannot write directly to SSDs. 
+This means that sector-based programs cannot write directly to SSDs.
 Nevertheless, SSDs can easily accommodate these programs because they use the same host interface as HDDs.
 To facilitate this, something is needed to assist SSDs in writing for sector-based programs, which is known as the Flash Translation Layer (FTL).
 
 FTL performs two important functions within the SSD: Logical Block Mapping and Garbage Collection (GC).
 FTL is responsible for converting logical addresses to physical address values to store logical sectors in physical pages, which is referred to as logical block mapping.
-Block mapping is stored in the SSD's memory for quick access and consists of a table containing Logical Block Addresses (LBA) and Physical Block Addresses (PBA). 
-Additionally, SSDs cannot perform in-place updates. 
+Block mapping is stored in the SSD's memory for quick access and consists of a table containing Logical Block Addresses (LBA) and Physical Block Addresses (PBA).
+Additionally, SSDs cannot perform in-place updates.
 Therefore, when new data arrives, existing data must be deleted before the new data can be stored.
 At this time, the SSD uses GC to preemptively free up space for deleted data, which also contributes to the durability of the SSD.
 

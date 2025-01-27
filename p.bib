@@ -1,30 +1,35 @@
 % vim: nowrap textwidth=0 filetype=bib  foldmethod=marker
 
-% Stub citation
-%{{{
-@inproceedings {nvmevirt,
+% Base
+@inproceedings{nvmevirt,
 	author = {Sang-Hoon Kim and Jaehoon Shim and Euidong Lee and Seongyeop Jeong and Ilkueon Kang and Jin-Soo Kim},
 	title = {{NVMeVirt}: A Versatile Software-defined Virtual {NVMe} Device},
 	crossref = {FAST23},
 }
+
+
+% Fragmentation
 @inproceedings{Defragmentation_Log_write_is_ssd_to_bad,
 	author = {Park, Jonggyu and Kang, Dong Hyun and Eom, Young Ik},
 	title = {File Defragmentation Scheme for a Log-Structured File System},
 	crossref = {APSYS16},
 }
-@inproceedings {Defragmentation_mobile,
+
+@inproceedings{Defragmentation_mobile,
 	author = {Sangwook Shane Hahn and Sungjin Lee and Cheng Ji and Li-Pin Chang and Inhyuk Yee and Liang Shi and Chun Jason Xue and Jihong Kim},
 	title = {Improving File System Performance of Mobile Storage Systems Using a Decoupled Defragmenter},
-	pages = {759--771},
 	crossref = {ATC17},
+	pages = {759--771},
 }
-@inproceedings {Defragmentation_nofile,
+
+@inproceedings{Defragmentation_nofile,
 	author = {Yuhun Jun and Shinhyun Park and Jeong-Uk Kang and Sang-Hoon Kim and Euiseong Seo},
 	title = {We Ain{\textquoteright}t Afraid of No File Fragmentation: Causes and Prevention of Its Performance Impact on Modern Flash {SSDs}},
-	pages = {193--208},
 	crossref = {FAST24},
+	pages = {193--208},
 }
-@ARTICLE{Defragmentation_read_collision,
+
+@article{Defragmentation_read_collision,
 	author={Jun, Yuhun and Park, Jaehyung and Kang, Jeong-Uk and Seo, Euiseong},
 	journal={IEEE Access}, 
 	title={Analysis and Mitigation of Patterned Read Collisions in Flash SSDs}, 
@@ -32,154 +37,109 @@
 	volume={10},
 	number={},
 	pages={96997-97009},
-	doi={10.1109/ACCESS.2022.3204994}
+	doi={10.1109/ACCESS.2022.3204994},
 }
-@inproceedings{Defragmentation_FragPicker,
+
+@inproceedings{fragpicker:sosp21,
 	author = {Park, Jonggyu and Eom, Young Ik},
 	title = {FragPicker: A New Defragmentation Tool for Modern Storage Devices},
+	crossref = {SOSP21},
 	pages = {280–294},
 	numpages = {15},
-	crossref = {SOSP21},
 }
+
 @article{Defragmentation_parallel_file_scheme,
-	title = {An efficient and parallel file defragmentation scheme for flash-based SSDs},
 	author = {Guangyu Zhu and Jeongeun Lee and Yongseok Son},
-	journal = {Proceedings of the 37th ACM/SIGAPP Symposium on Applied Computing},
+	title = {An efficient and parallel file defragmentation scheme for flash-based SSDs},
+	journal = POT # {37th ACM/SIGAPP Symposium on Applied Computing (SAC)},
 	year = {2022},
-	url = {https://api.semanticscholar.org/CorpusID:248546020}
+	url = {https://api.semanticscholar.org/CorpusID:248546020},
 }
-@inproceedings {Problem_in_SSD_Senescence,
+
+@inproceedings{Problem_in_SSD_Senescence,
 	author = {Alex Conway and Ainesh Bakshi and Yizheng Jiao and William Jannen and Yang Zhan and Jun Yuan and Michael A. Bender and Rob Johnson and Bradley C. Kuszmaul and Donald E. Porter and Martin Farach-Colton},
 	title = {File Systems Fated for Senescence? Nonsense, Says Science!},
-	booktitle = {15th USENIX Conference on File and Storage Technologies (FAST 17)},
-	year = {2017},
-	isbn = {978-1-931971-36-2},
-	address = {Santa Clara, CA},
+	crossref = {FAST17},
 	pages = {45--58},
-	url = {https://www.usenix.org/conference/fast17/technical-sessions/presentation/conway},
-	publisher = {USENIX Association},
-	month = feb
 }
-@inproceedings {Problem_in_SSD_Empirical,
+
+@inproceedings{Problem_in_SSD_Empirical,
 	author = {Cheng Ji and Li-Pin Chang and Liang Shi and Chao Wu and Qiao Li and Chun Jason Xue},
 	title = {An Empirical Study of {File-System} Fragmentation in Mobile Storage Systems},
-	booktitle = {8th USENIX Workshop on Hot Topics in Storage and File Systems (HotStorage 16)},
-	year = {2016},
-	address = {Denver, CO},
-	url = {https://www.usenix.org/conference/hotstorage16/workshop-program/presentation/ji},
-	publisher = {USENIX Association},
-	month = jun
+	crossref = {HOTSTORAGE16},
 }
-@ARTICLE{Problem_in_SSD_Mobile_Devices,
+
+@article{Problem_in_SSD_Mobile_Devices,
 	author = {Ji, Cheng and Chang, Li-Pin and Hahn, Sangwook Shane and Lee, Sungjin and Pan, Riwei and Shi, Liang and Kim, Jihong and Xue, Chun Jason},
-	journal = {IEEE Transactions on Mobile Computing}, 
 	title = {File Fragmentation in Mobile Devices: Measurement, Evaluation, and Treatment}, 
+	journal = {IEEE Transactions on Mobile Computing}, 
 	year = {2019},
 	volume = {18},
 	number = {9},
 	pages = {2062-2076},
-	keywords = {Smart phones;Databases;Aging;Mobile computing;Androids;Humanoid robots;Measurements;flash memory;file fragmentation;I/O performance},
-	doi = {10.1109/TMC.2018.2869737}
 }
-@inproceedings {Before_utilizer_Geriatrix,
+
+@inproceedings{geriatrix:atc18,
 	author = {Saurabh Kadekodi and Vaishnavh Nagarajan and Gregory R. Ganger},
 	title = {Geriatrix: Aging what you see and what you {don{\textquoteright}t} see. A file system aging approach for modern storage systems},
-	booktitle = {2018 USENIX Annual Technical Conference (USENIX ATC 18)},
-	year = {2018},
-	isbn = {978-1-931971-44-7},
-	address = {Boston, MA},
+	crossref = {ATC18},
 	pages = {691--704},
-	url = {https://www.usenix.org/conference/atc18/presentation/kadekodi},
-	publisher = {USENIX Association},
-	month = jul
 }
-@inproceedings {Fragmentation_is_problem_It'smore,
+
+@inproceedings{Fragmentation_is_problem_It'smore,
 	author = {Alex Conway and Eric Knorr and Yizheng Jiao and Michael A. Bender and William Jannen and Rob Johnson and Donald Porter and Martin Farach-Colton},
 	title = {Filesystem Aging: {It{\textquoteright}s} more Usage than Fullness},
-	booktitle = {11th USENIX Workshop on Hot Topics in Storage and File Systems (HotStorage 19)},
-	year = {2019},
-	address = {Renton, WA},
-	url = {https://www.usenix.org/conference/hotstorage19/presentation/conway},
-	publisher = {USENIX Association},
-	month = jul
+	crossref = {HOTSTORAGE19},
 }
-@inproceedings {Logical_Fragmentation_vs_physical_Fragmentation,
+
+@inproceedings{Logical_Fragmentation_vs_physical_Fragmentation,
 	author = {Sangwook Shane Hahn and Sungjin Lee and Cheng Ji and Li-Pin Chang and Inhyuk Yee and Liang Shi and Chun Jason Xue and Jihong Kim},
 	title = {Improving File System Performance of Mobile Storage Systems Using a Decoupled Defragmenter},
-	booktitle = {2017 USENIX Annual Technical Conference (USENIX ATC 17)},
-	year = {2017},
-	isbn = {978-1-931971-38-6},
-	address = {Santa Clara, CA},
+	crossref = {ATC17},
 	pages = {759--771},
-	url = {https://www.usenix.org/conference/atc17/technical-sessions/presentation/hahn},
-	publisher = {USENIX Association},
-	month = jul
 }
+
 @article{after_time_aging_increase,
 	author = {Kesavan, Ram and Curtis-Maury, Matthew and Devadas, Vinay and Mishra, Kesari},
 	title = {Countering Fragmentation in an Enterprise Storage System},
-	year = {2020},
-	issue_date = {November 2019},
-	publisher = {Association for Computing Machinery},
-	address = {New York, NY, USA},
+	journal = {TOS},
+	year = {2019},
+	month = nov,
 	volume = {15},
 	number = {4},
-	issn = {1553-3077},
-	url = {https://doi.org/10.1145/3366173},
-	doi = {10.1145/3366173},
-	abstract = {As a file system ages, it can experience multiple forms of fragmentation. Fragmentation of the free space in the file system can lower write performance and subsequent read performance. Client operations as well as internal operations, such as deduplication, can fragment the layout of an individual file, which also impacts file read performance. File systems that allow sub-block granular addressing can gather intra-block fragmentation, which leads to wasted free space. Similarly, wasted space can also occur when a file system writes a collection of blocks out to object storage as a single large object, because the constituent blocks can become free at different times. The impact of fragmentation also depends on the underlying storage media. This article studies each form of fragmentation in the NetApp® WAFL®file system, and explains how the file system leverages a storage virtualization layer for defragmentation techniques that physically relocate blocks efficiently, including those in read-only snapshots. The article analyzes the effectiveness of these techniques at reducing fragmentation and improving overall performance across various storage media.},
-	journal = {ACM Trans. Storage},
-	month = jan,
+	publisher = {Association for Computing Machinery},
 	articleno = {25},
 	numpages = {35},
-	keywords = {Storage system, deduplication, file system, file system performance, fragmentation, snapshot}
 }
-@article{conway2017fragment,
+
+@article{conway:login17,
 	author = {Conway, Alex and Bakshi, Ainesh and Jiao, Yizheng and Zhan, Yang and Bender, Michael A and Jannen, William and Johnson, Rob and Kuszmaul, Bradley C and Porter, Donald E and Yuan, Jun and others},
-	journal = {USENIX; login},
 	title = {How to fragment your file system},
-	year = {2017}
+	journal = {USENIX; login},
+	year = {2017},
 }
-@INPROCEEDINGS{Survey,
+
+@inproceedings{survey:ictc23,
 	author = {Lee, Sangjin and Nguyen, Lan Anh and Yeo, Hyeongi and Kim, Sunggon and Cho, Sungrae and Son, Yongseok},
-	booktitle = {2023 14th International Conference on Information and Communication Technology Convergence (ICTC)}, 
 	title = {A Survey on File Defragmentation Techniques on Modern Storage Systems}, 
+	booktitle = POT # {14th International Conference on Information and Communication Technology Convergence (ICTC)}, 
 	year = {2023},
 	volume = {},
 	number = {},
 	pages = {785-787},
-	keywords = {Surveys;Performance evaluation;Degradation;File systems;Tail;Aging;Throughput;Fragmentation;File system aging;Defragmentation},
-	doi = {10.1109/ICTC58733.2023.10393099}
 }
-@inproceedings {Gardening,
+
+@inproceedings{gardening:fast19,
 	author = {Ram Kesavan and Matthew Curtis-Maury and Vinay Devadas and Kesari Mishra},
 	title = {Storage Gardening: Using a Virtualization Layer for Efficient Defragmentation in the {WAFL} File System},
-	booktitle = {17th USENIX Conference on File and Storage Technologies (FAST 19)},
-	year = {2019},
-	isbn = {978-1-939133-09-0},
-	address = {Boston, MA},
+	crossref = {FAST19},
 	pages = {65--78},
-	url = {https://www.usenix.org/conference/fast19/presentation/kesavan},
-	publisher = {USENIX Association},
-	month = feb
 }
 
 @inproceedings{IO,
 	author = {Park, Jonggyu and Eom, Young Ik},
 	title = {File fragmentation from the perspective of I/O control},
-	year = {2022},
-	isbn = {9781450393997},
-	publisher = {Association for Computing Machinery},
-	address = {New York, NY, USA},
-	url = {https://doi.org/10.1145/3538643.3539746},
-	doi = {10.1145/3538643.3539746},
-	abstract = {File fragmentation has been widely studied for several decades due to its detrimental effects on I/O activities. However, most of the previous research focuses on its performance aspect in a single application. In this paper, we analyze the effect of fragmentation on I/O control in a consolidated system where multiple applications run simultaneously. Our evaluation demonstrates that all of the weight-based I/O control mechanisms supported by the Linux kernel fail to achieve fair I/O sharing for different reasons when they meet fragmentation. Also, we show that defragmentation can promptly antidote such failures by preventing request splitting and device-level resource conflicts.},
-	booktitle = {Proceedings of the 14th ACM Workshop on Hot Topics in Storage and File Systems},
+	crossref = {HOTSTORAGE22},
 	pages = {126–132},
 	numpages = {7},
-	keywords = {I/O control, cgroups, file fragmentation},
-	location = {Virtual Event},
-	series = {HotStorage '22}
 }
-
-%}}}
