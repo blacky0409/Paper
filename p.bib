@@ -2,106 +2,92 @@
 
 % Base
 @inproceedings{nvmevirt,
-	author = {Sang-Hoon Kim and Jaehoon Shim and Euidong Lee and Seongyeop Jeong and Ilkueon Kang and Jin-Soo Kim},
 	title = {{NVMeVirt}: A Versatile Software-defined Virtual {NVMe} Device},
+	author = {Sang-Hoon Kim and Jaehoon Shim and Euidong Lee and Seongyeop Jeong and Ilkueon Kang and Jin-Soo Kim},
 	crossref = {FAST23},
 }
 
 
 % Fragmentation
-@inproceedings{Defragmentation_Log_write_is_ssd_to_bad,
-	author = {Park, Jonggyu and Kang, Dong Hyun and Eom, Young Ik},
+@inproceedings{defrag-lfs:apsys16,
 	title = {File Defragmentation Scheme for a Log-Structured File System},
+	author = {Park, Jonggyu and Kang, Dong Hyun and Eom, Young Ik},
 	crossref = {APSYS16},
 }
-
-@inproceedings{Defragmentation_mobile,
-	author = {Sangwook Shane Hahn and Sungjin Lee and Cheng Ji and Li-Pin Chang and Inhyuk Yee and Liang Shi and Chun Jason Xue and Jihong Kim},
+@inproceedings{defrag-mobile:atc17,
 	title = {Improving File System Performance of Mobile Storage Systems Using a Decoupled Defragmenter},
+	author = {Sangwook Shane Hahn and Sungjin Lee and Cheng Ji and Li-Pin Chang and Inhyuk Yee and Liang Shi and Chun Jason Xue and Jihong Kim},
 	crossref = {ATC17},
 	pages = {759--771},
 }
-
-@inproceedings{Defragmentation_nofile,
-	author = {Yuhun Jun and Shinhyun Park and Jeong-Uk Kang and Sang-Hoon Kim and Euiseong Seo},
+@inproceedings{no-afraid:fast24,
 	title = {We Ain{\textquoteright}t Afraid of No File Fragmentation: Causes and Prevention of Its Performance Impact on Modern Flash {SSDs}},
+	author = {Yuhun Jun and Shinhyun Park and Jeong-Uk Kang and Sang-Hoon Kim and Euiseong Seo},
 	crossref = {FAST24},
 	pages = {193--208},
 }
-
 @article{Defragmentation_read_collision,
-	author={Jun, Yuhun and Park, Jaehyung and Kang, Jeong-Uk and Seo, Euiseong},
-	journal={IEEE Access}, 
-	title={Analysis and Mitigation of Patterned Read Collisions in Flash SSDs}, 
-	year={2022},
-	volume={10},
-	number={},
-	pages={96997-97009},
-	doi={10.1109/ACCESS.2022.3204994},
+	title = {Analysis and Mitigation of Patterned Read Collisions in Flash SSDs}, 
+	author = {Jun, Yuhun and Park, Jaehyung and Kang, Jeong-Uk and Seo, Euiseong},
+	journal = {IEEE Access}, 
+	year = {2022},
+	volume = {10},
+	number = {},
+	pages = {96997-97009},
 }
-
 @inproceedings{fragpicker:sosp21,
-	author = {Park, Jonggyu and Eom, Young Ik},
 	title = {FragPicker: A New Defragmentation Tool for Modern Storage Devices},
+	author = {Park, Jonggyu and Eom, Young Ik},
 	crossref = {SOSP21},
 	pages = {280–294},
 	numpages = {15},
 }
-
-@article{Defragmentation_parallel_file_scheme,
-	author = {Guangyu Zhu and Jeongeun Lee and Yongseok Son},
+@article{parallel-defrag:sac22,
 	title = {An efficient and parallel file defragmentation scheme for flash-based SSDs},
-	journal = POT # {37th ACM/SIGAPP Symposium on Applied Computing (SAC)},
+	author = {Guangyu Zhu and Jeongeun Lee and Yongseok Son},
+	journal = POT # { 37th } # SAC,
 	year = {2022},
-	url = {https://api.semanticscholar.org/CorpusID:248546020},
 }
-
-@inproceedings{Problem_in_SSD_Senescence,
-	author = {Alex Conway and Ainesh Bakshi and Yizheng Jiao and William Jannen and Yang Zhan and Jun Yuan and Michael A. Bender and Rob Johnson and Bradley C. Kuszmaul and Donald E. Porter and Martin Farach-Colton},
+@inproceedings{senescence:fast17,
 	title = {File Systems Fated for Senescence? Nonsense, Says Science!},
+	author = {Alex Conway and Ainesh Bakshi and Yizheng Jiao and William Jannen and Yang Zhan and Jun Yuan and Michael A. Bender and Rob Johnson and Bradley C. Kuszmaul and Donald E. Porter and Martin Farach-Colton},
 	crossref = {FAST17},
 	pages = {45--58},
 }
-
 @inproceedings{Problem_in_SSD_Empirical,
-	author = {Cheng Ji and Li-Pin Chang and Liang Shi and Chao Wu and Qiao Li and Chun Jason Xue},
 	title = {An Empirical Study of {File-System} Fragmentation in Mobile Storage Systems},
+	author = {Cheng Ji and Li-Pin Chang and Liang Shi and Chao Wu and Qiao Li and Chun Jason Xue},
 	crossref = {HOTSTORAGE16},
 }
-
 @article{Problem_in_SSD_Mobile_Devices,
-	author = {Ji, Cheng and Chang, Li-Pin and Hahn, Sangwook Shane and Lee, Sungjin and Pan, Riwei and Shi, Liang and Kim, Jihong and Xue, Chun Jason},
 	title = {File Fragmentation in Mobile Devices: Measurement, Evaluation, and Treatment}, 
-	journal = {IEEE Transactions on Mobile Computing}, 
+	author = {Ji, Cheng and Chang, Li-Pin and Hahn, Sangwook Shane and Lee, Sungjin and Pan, Riwei and Shi, Liang and Kim, Jihong and Xue, Chun Jason},
+	journal = TMC,
 	year = {2019},
 	volume = {18},
 	number = {9},
 	pages = {2062-2076},
 }
-
 @inproceedings{geriatrix:atc18,
-	author = {Saurabh Kadekodi and Vaishnavh Nagarajan and Gregory R. Ganger},
 	title = {Geriatrix: Aging what you see and what you {don{\textquoteright}t} see. A file system aging approach for modern storage systems},
+	author = {Saurabh Kadekodi and Vaishnavh Nagarajan and Gregory R. Ganger},
 	crossref = {ATC18},
 	pages = {691--704},
 }
-
-@inproceedings{Fragmentation_is_problem_It'smore,
-	author = {Alex Conway and Eric Knorr and Yizheng Jiao and Michael A. Bender and William Jannen and Rob Johnson and Donald Porter and Martin Farach-Colton},
+@inproceedings{fsaging:hotstorage19,
 	title = {Filesystem Aging: {It{\textquoteright}s} more Usage than Fullness},
+	author = {Alex Conway and Eric Knorr and Yizheng Jiao and Michael A. Bender and William Jannen and Rob Johnson and Donald Porter and Martin Farach-Colton},
 	crossref = {HOTSTORAGE19},
 }
-
-@inproceedings{Logical_Fragmentation_vs_physical_Fragmentation,
-	author = {Sangwook Shane Hahn and Sungjin Lee and Cheng Ji and Li-Pin Chang and Inhyuk Yee and Liang Shi and Chun Jason Xue and Jihong Kim},
+@inproceedings{janusd:atc17,
 	title = {Improving File System Performance of Mobile Storage Systems Using a Decoupled Defragmenter},
+	author = {Sangwook Shane Hahn and Sungjin Lee and Cheng Ji and Li-Pin Chang and Inhyuk Yee and Liang Shi and Chun Jason Xue and Jihong Kim},
 	crossref = {ATC17},
 	pages = {759--771},
 }
-
 @article{after_time_aging_increase,
-	author = {Kesavan, Ram and Curtis-Maury, Matthew and Devadas, Vinay and Mishra, Kesari},
 	title = {Countering Fragmentation in an Enterprise Storage System},
+	author = {Kesavan, Ram and Curtis-Maury, Matthew and Devadas, Vinay and Mishra, Kesari},
 	journal = {TOS},
 	year = {2019},
 	month = nov,
@@ -111,35 +97,88 @@
 	articleno = {25},
 	numpages = {35},
 }
-
 @article{conway:login17,
-	author = {Conway, Alex and Bakshi, Ainesh and Jiao, Yizheng and Zhan, Yang and Bender, Michael A and Jannen, William and Johnson, Rob and Kuszmaul, Bradley C and Porter, Donald E and Yuan, Jun and others},
 	title = {How to fragment your file system},
+	author = {Conway, Alex and Bakshi, Ainesh and Jiao, Yizheng and Zhan, Yang and Bender, Michael A and Jannen, William and Johnson, Rob and Kuszmaul, Bradley C and Porter, Donald E and Yuan, Jun and others},
 	journal = {USENIX; login},
 	year = {2017},
 }
-
 @inproceedings{survey:ictc23,
-	author = {Lee, Sangjin and Nguyen, Lan Anh and Yeo, Hyeongi and Kim, Sunggon and Cho, Sungrae and Son, Yongseok},
 	title = {A Survey on File Defragmentation Techniques on Modern Storage Systems}, 
+	author = {Lee, Sangjin and Nguyen, Lan Anh and Yeo, Hyeongi and Kim, Sunggon and Cho, Sungrae and Son, Yongseok},
 	booktitle = POT # {14th International Conference on Information and Communication Technology Convergence (ICTC)}, 
 	year = {2023},
 	volume = {},
 	number = {},
 	pages = {785-787},
 }
-
 @inproceedings{gardening:fast19,
-	author = {Ram Kesavan and Matthew Curtis-Maury and Vinay Devadas and Kesari Mishra},
 	title = {Storage Gardening: Using a Virtualization Layer for Efficient Defragmentation in the {WAFL} File System},
+	author = {Ram Kesavan and Matthew Curtis-Maury and Vinay Devadas and Kesari Mishra},
 	crossref = {FAST19},
 	pages = {65--78},
 }
-
 @inproceedings{IO,
-	author = {Park, Jonggyu and Eom, Young Ik},
 	title = {File fragmentation from the perspective of I/O control},
+	author = {Park, Jonggyu and Eom, Young Ik},
 	crossref = {HOTSTORAGE22},
 	pages = {126–132},
 	numpages = {7},
+}
+@inproceedings{f2fs-mobile:nvmsa24,
+	title = {Eliminate Critical Fragmentation of {F2FS} in Mobile Devices with Controller Co-Design},
+	author = {Wang, Wenxin and Li, Yaqi and Shi, Liang and Sha, Edwin H.-M.},
+	booktitle = POT # {13th Non-Volatile Memory Systems and Applications Symposium ({NVMSA})},
+	month = aug,
+	year = {2024},
+}
+
+
+% Filesystem aging
+@inproceedings{fs-aging:sigmetrics97,
+	title = {File system aging—increasing the relevance of file system benchmarks},
+	booktitle = POT # {1997 {ACM} {SIGMETRICS} International Conference on Measurement and Modeling of Computer Systems (SIGMERICS)},
+	author = {Smith, Keith A. and Seltzer, Margo I.},
+	month = jun,
+	year = {1997},
+	pages = {203--213},
+}
+@article{impressions:fast09,
+	title = {Generating realistic impressions for file-system benchmarking},
+	author = {Agrawal, Nitin and Arpaci-Dusseau, Andrea C. and Arpaci-Dusseau, Remzi H.},
+	crossref = {FAST09},
+}
+@inproceedings{tbbt:fast05,
+	title = {{TBBT}: {Scalable} and {Accurate} {Trace} {Replay} for {File} {Server} {Evaluation}},
+	author = {Zhu, Ningning and Chen, Jiawu and Chiueh, Tzi-cker},
+	crossref = {FAST05}
+}
+
+
+% Filesystems and standards
+@inproceedings{f2fs:fast15,
+	title = {{F2FS}: A New File System for Flash Storage},
+	author = {Lee, Changman and Sim, Dongho and Hwang, Jooyoung and Cho, Sangyeun},
+	crossref = {FAST15},
+	pages = {273--286},
+}
+@inproceedings{ext4,
+	title = {The New Ext4 Filesystem: Current Status and Future Plans},
+	author = {Mathur, Avantika and Cao, Mingming and Bhattacharya, Suparna and Dilger, Andreas and Tomas, Alex and Vivier, Laurent},
+	address = {Ottawa, Ontario, Canada},
+	booktitle = POT # {{Linux} Symposium},
+	month = jun,
+	year = {2007},
+}
+@inproceedings{betrfs:fast15,
+	title = {{BetrFS}: A Right-Optimized Write-Optimized File System},
+	author = {Jannen, William and Yuan, Jun and Zhan, Yang and Akshintala, Amogh and Esmet, John and Jiao, Yizheng and Mittal, Ankur and Pandey, Prashant and Reddy, Phaneendra and Walsh, Leif and Bender, Michael and Farach-Colton, Martin and Johnson, Rob and Kuszmaul, Bradley C. and Porter, Donald E.},
+	crossref = {FAST15},
+	pages = {301--315},
+}
+@misc{ufs4.0,
+	title = {{UFS}: (Universal Flash Storage)},
+	author = {JEDEC},
+	howpublished = {\url{https://www.jedec.org/standards-documents/focus/flash/universal-flash-storage-ufs}},
+	accessed = {2025-01},
 }

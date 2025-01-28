@@ -15,8 +15,8 @@
  Fragmentation increases the overhead by requiring the disk head to move more frequently, particularly having a pronounced negative impact on read operations.
 
 \noindent {\textbf{Filesystem Fragmentation in SSDs.}} In flash memory, there is no seek time or rotational latency, so early researchers generally argued that SSD performance is not affected by filesystem fragmentation.
-Therefore, techniques like defragmentation were thought to have only negative impacts by reducing the lifespan of flash memory due to additional write operations.\cite{Defragmentation_mobile,fragpicker:sosp21,Defragmentation_Log_write_is_ssd_to_bad,Defragmentation_nofile,Defragmentation_parallel_file_scheme,Defragmentation_read_collision}
-However, recent studies have shown that filesystem aging and resultant fragmentation can also lead to performance degradation in SSDs.\cite{Problem_in_SSD_Empirical,Problem_in_SSD_Senescence,Problem_in_SSD_Mobile_Devices,survey:ictc23}
+Therefore, techniques like defragmentation were thought to have only negative impacts by reducing the lifespan of flash memory due to additional write operations.\cite{defrag-mobile:atc17,fragpicker:sosp21,defrag-lfs:apsys16,no-afraid:fast24,parallel-defrag:sac22,Defragmentation_read_collision}
+However, recent studies have shown that filesystem aging and resultant fragmentation can also lead to performance degradation in SSDs.\cite{Problem_in_SSD_Empirical,senescence:fast17,Problem_in_SSD_Mobile_Devices,survey:ictc23}
 
 The first reason for this is request fragmentation.
 In the Linux I/O stack, a single I/O request can only represent contiguous LBA (Logical Block Address).
@@ -27,7 +27,7 @@ If multiple I/O requests are necessary for one file, the system must generate bi
 Secondly, SSDs enhance read performance through prefetching, which loads subsequent data in advance based on LBA.
 Fragmentation can cause this prefetching to load unnecessary data.\cite{Defragmentation_Log_write_is_ssd_to_bad} For these reasons, filesystem fragmentation is also a concern in SSDs.
 
-\noindent {\textbf{Logical Fragmentation and Physical Fragmentation.}} I/O performance in flash storage is affected in different ways by logical fragmentation and physical fragmentation.\cite{Logical_Fragmentation_vs_physical_Fragmentation}
+\noindent {\textbf{Logical Fragmentation and Physical Fragmentation.}} I/O performance in flash storage is affected in different ways by logical fragmentation and physical fragmentation.\cite{janusd:atc17}
 Logical fragmentation occurs when files are allocated in multiple fragmented storage spaces (extents) within the filesystem.
 When a file is not stored contiguously and is spread across various locations, the filesystem recognizes this as being in a logically fragmented state.
 As a result, more I/O requests are needed to read the file, which increases overhead in I/O scheduling and handshaking processes.

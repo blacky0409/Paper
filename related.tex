@@ -8,12 +8,28 @@ Despite these efforts, fragmentation continues to pose problems. As a result, re
 Numerous studies have been conducted for this purpose, and various tools are available.
 
 \SK{Git workload is moved to evaluation Section~\ref{s:eval}}
+\SK{File fragmentation vs space fragmentation}
+\SK{File fragentation -> Logical fragmentation vs physical fragmentation}
 
 Geriatrix\cite{geriatrix:atc18} is an aging tool that, unlike previous studies, induces fragmentation not only in allocated files but also in remaining free space.
 Previous aging tools only targeted fragmentation in allocated files.
 Consequently, earlier approaches failed to adequately reproduce the effects of free space fragmentation and device aging on the SSD's filesystem.
 However, Geriatrix can effectively reproduce these conditions.
 \SK{How?}
+\SK{Focusing on free space fragmentation}
 
 Such aging tools have created an environment where researchers can easily replicate SSDs in real-life scenarios.
 However, these aging processes can take anywhere from a few weeks to several months, and this wasted time is critical for research.
+
+
+File systems using out-of-place update scheme are susceptible to fragmentation since update operations can lead to file fragmentation.
+\cite{f2fs-mobile:nvmsa24} F2FS fragmentation in Android mobile devices.
+Leverage File-based Optimization~(FBO) in the UFS 4.0~\cite{ufs4.0}
+Took days to fragment file system
+
+
+FragPicker~\cite{fragpicker:sosp21} monitors VFS read/write operations with eBPF to identify hot files.
+Manage logical fragmentations of the hot files
+
+
+\cite{fs-aging:sigmetric97} shows 3-years study, which is not feasible in may cases
