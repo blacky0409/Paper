@@ -245,8 +245,7 @@ Nonetheless, in this research, the advantages gained from reading and writing fi
 
 As mentioned in Section 3.3.1, the data that needs to be preserved includes the FTL metadata, block lists, SSD storage metadata, and contents.
 Instead of managing these in multiple files, we opted to store them in a single file for convenience in later distribution and SSD aging creation.
-The functions used for reading and writing to the file are \cc{Kernel\_Write()} and \cc{Kernel\_Read()}.
-
+The functions used for reading and writing to the file are \texttt{Kernel\_Write()} and \texttt{Kernel\_Read()}.
 
 There are two key points to highlight.
 First is the block lists.
