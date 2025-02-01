@@ -19,8 +19,8 @@ all: $(PDF)
 open:
 	@$(LATEXMK) -pv
 
-.PHONY: build
-build:
+.PHONY: autobuild
+autobuild:
 	@$(LATEXMK) -pvc
 
 .PHONY: graphs figs
