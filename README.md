@@ -41,18 +41,20 @@ Storage snapshotting using NVMeVirt
 ## Microbenchmark
   - Dump performance: vanilla vs valid parts only
   - Space overhead: 특정 크기의 storage를 snapshot하는데 있어 드는 추가 공간
-  - [ ] Check FSFB in fs-aging:hotstorage19
+  - [ ] Check FSFB in fsaging:hotstorage19
   - Dynamic layout score with blktrace
   - [ ] Recursive grep test?
 
 ## Compare filesystems
-[ ] Check results against fs-aging:hotstorage19
+[ ] Check results against fsaging:hotstorage19
 ### Ext4
   - [v] sqlite
-  - [-] Git: kernel build
-  - [-] Rocksdb
+    - 어떻게 실험
+  - [v] Git: kernel build
+
+  - [X] Rocksdb
 
 ### F2FS
-  - [-] sqlite
+  - [v] sqlite
   - %- Git
   - %- Rocksdb
