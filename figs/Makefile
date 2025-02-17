@@ -1,5 +1,5 @@
 .PHONY: all
-all:
+all: ssd.pdf nvmev-making.pdf fragmentation.pdf mapping-table.pdf ftl-role.pdf
 
 .PHONY: clean
 clean:
@@ -17,5 +17,18 @@ pg%.pdf: figures.pdf
 
 .INTERMEDIATE: pg1.pdf pg2.pdf
 
-arch.pdf: pg1.pdf
+ssd.pdf: pg1.pdf
 	@mv $< $@
+
+nvmev-making.pdf: pg2.pdf
+	@mv $< $@
+
+fragmentation.pdf: pg3.pdf
+	@mv $< $@
+
+mapping-table.pdf: pg4.pdf
+	@mv $< $@
+
+ftl-role.pdf: pg5.pdf
+	@mv $< $@
+

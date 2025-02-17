@@ -17,7 +17,7 @@
 %
 % 3. Both logical and physical fragmentation matters
 %    - Due to the hw-built nature of storage...
-% 
+%
 
 
 % MOVED --------------------------------------------------vvvvvvvvvvvvvvvv
@@ -122,12 +122,12 @@ Through our research, we aim to facilitate the rapid creation of aged SSDs for f
 NVMeVirt\cite{nvmevirt} is a Linux kernel module that provides a virtual NVMe device to the system.
 NVMeVirt emulates NVMe devices at the PCI layer.
 So it supports various types of NVMe SSDs, including can be used not only for standard devices but also for advanced storage configurations such as NVMe-over-Fabrics offloads.
-Since it was published with the support for basic SSDs, ZNS SSDs, and key-value SSDs, there have been many open-sourced project to expend the support, including 
+Since it was published with the support for basic SSDs, ZNS SSDs, and key-value SSDs, there have been many open-sourced project to expend the support, including
 FDP SSDs, computational storage, and so forth~\cite{CITE,CITE,CITE}.
 
 \begin{figure}[t]
     \centering
-    \includegraphics[width=0.95\columnwidth]{figs/SSD structure.jpg}
+    \includegraphics[width=0.95\columnwidth]{ssd}
     \caption{NVMeVirt SSD structure}
     \label{fig:structure}
 \end{figure}
@@ -153,7 +153,7 @@ For reads, the data is sent directly from the FTL instance to the buffer specifi
 
 \begin{figure}[t]
     \centering
-    \includegraphics[width=0.95\columnwidth]{figs/NVMeVirt making.jpg}
+    \includegraphics[width=0.95\columnwidth]{nvmev-making}
     \caption{Make the NVMeVirt instance}
     \label{fig:making}
 \end{figure}
@@ -189,7 +189,7 @@ Through our research, we aim to facilitate the rapid creation of aged SSDs for f
 
 \begin{figure*}[t]
     \centering
-    \includegraphics[width=0.95\textwidth]{figs/FTL's mapping table.jpg}
+    \includegraphics[width=0.95\textwidth]{mapping-table}
     \caption{NVMeVirt’s relation between FTL and data save process}
     \label{fig:mappingtable}
 \end{figure*}
@@ -205,7 +205,7 @@ Therefore, it is necessary to store the mapping table, reverse mapping table, an
 
 \begin{figure}[t]
     \centering
-    \includegraphics[width=0.95\columnwidth]{figs/FTL role.jpg}
+    \includegraphics[width=0.95\columnwidth]{ftl-role}
     \caption{FTL’s role}
     \label{fig:role}
 \end{figure}
