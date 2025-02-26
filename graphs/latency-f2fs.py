@@ -4,14 +4,15 @@ import matplotlib
 import matplotlib.pyplot as plt
 import numpy as np
 
-f = open("./sample-lines", "r")
+f = open("./latency-f2fs", "r")
 lines = f.readlines()
 data1 = []
 data2 = []
 for line in lines:
     e = line.split()
     data1.append(float(e[0]))
-    data2.append(float(e[1]))
+#    data2.append(float(e[1]))
+
 
 '''
 plt.rcParams['text.usetex'] = True
@@ -30,16 +31,18 @@ ax.get_yaxis().set_major_formatter(matplotlib.ticker.FuncFormatter(lambda y, p: 
 data1 = np.cumsum(time_large_1[:last]) / mcsec
 print((data1[-1] + large2_x[-1] + large3_x[-1]) / 3)
 '''
+x_values = [1, 10, 50, 100, 200, 400, 600, 800, 1000]
 
-plt.plot(data1, label='A', color='C0')
-plt.plot(data2, label='B', color='C1')
+plt.plot(x_values[:len(data1)], data1, label='SQLite', color='C0')
+#plt.plot(x_values[:len(data2)], data2, label='RockDB', color='C1')
+
 
 plt.grid(linestyle='dotted', linewidth=0.5)
 
 #plt.title('Page Allocation Latency')
-plt.xlabel('X-axis')
-plt.ylabel('Values (second)')
-plt.legend(loc='upper left', ncol=1, prop={'size': 8})
+plt.xlabel('Round')
+plt.ylabel('Grep Latency')
+plt.legend(loc='upper right', ncol=1, prop={'size': 8})
 
 plt.tight_layout()
-plt.savefig('sample-lines.pdf')
+plt.savefig('latency-f2fs.pdf')

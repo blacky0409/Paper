@@ -1,5 +1,5 @@
 .PHONY: all
-all: sample-lines.pdf sample-boxes.pdf
+all: dynamic.pdf latency.pdf dynamic-f2fs.pdf latency-f2fs.pdf
 
 .PHONY: clean
 clean:
