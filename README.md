@@ -58,3 +58,9 @@ Storage snapshotting using NVMeVirt
   - [v] sqlite
   - %- Git
   - %- Rocksdb
+
+## Introduction design
+- 문제 제기 => 요즘은 이런게 있더라, 근데 이런게 문제가 있지 않니 ==> 조각화가 저장장치 성능에 영향을 미치고 있음 => 여기서, 우리 실험에서 시간에 따른 dynamic layout score(파일시스템의 단편화 점수=> 높을 수록 좋음), 그와 대응되게 증가하는 latency를 보여줌
+- 목표 설정 => 이 문제를 이렇게 해결할 수 있지 않을까? => 뭐 여러가지가 있었는데, 근데 aging이 너무 오래걸리잖아...(fs-aging:sigmetrics97와 민석이가 측정해줄 시간에 따른 aging정도 그래프를 인용)
+- 기여사항 =>  그래서 우리가 이런걸 만들었다. 우리는 이런이런 방향을 보았고, 했어 => 그래서, snapshot을 뜨자. 근데, PFN fragmentation이 문제가 되잖아 => FTL도 뜨자! => FTL 못건드는데? => 애뮬레이터 이용하자~! 
+- 논문 진행사항 => 논문의 구조 어디에서 ~~했다. 등
