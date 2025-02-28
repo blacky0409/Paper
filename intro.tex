@@ -3,7 +3,7 @@
 
 % raise issue => 다양한 스토리지가 나옴 => 여전히 fragmentation은 문제가 됨 => 실험이 힘들다..
 %-------------------------------------------------------------------------
-%conventional SSD를 넘어서 ZNS, OCSSD, KVSSD와 가장 최근에 각광받는 FDP 등 성능과 밀도개선과 함께, 저장장치를 더 스마트하고 능력있게 만드는데 집중하고 있습니다.
+% conventional SSD를 넘어서 ZNS, OCSSD, KVSSD와 가장 최근에 각광받는 FDP 등 성능과 밀도개선과 함께, 저장장치를 더 스마트하고 능력있게 만드는데 집중하고 있습니다.
 % 이런 새로운 유형의 장치들은 저장 장치 환경을 다양화시키고 있습니다. 그에 따라, 새로운 환경에 대한 다양한 연구가 진행되어집니다.
 % 예를 들어, ZNS의 경우에는 기존 OS Swap기술의 단점을 해결하고자 하는 연구가 있었습니다.
 % 더 이전에 만들어진 저장장치 유형일 수록 더욱 다양한 연구가 진행되어집니다.
@@ -25,7 +25,7 @@
 
 % 이렇게 낭비되는 시간은, 연구있어서 critical합니다.
 
-Beyond conventional SSDs, new types such as ZNS (Zoned Namespace), OCSSD (Open Channel SSD), KVSSD (Key-Value SSD), and the recently spotlighted FDP (Flash Device Protocol) are focusing on improving performance and density, making storage devices smarter and more capable. 
+Beyond conventional SSDs, new types such as ZNS (Zoned Namespace SSD), OCSSD (Open Channel SSD), KVSSD (Key-Value SSD), and the recently spotlighted FDP (Flexible Data Placement) are focusing on improving performance and density, making storage devices smarter and more capable. 
 These new types of devices are diversifying the storage environment, leading to various research efforts to explore new conditions.
 For example, in the case of ZNS, research has aimed to address the shortcomings of existing OS Swap technology. 
 As older types of storage devices have been developed, they have prompted numerous research initiatives.
@@ -80,7 +80,7 @@ In conventional SSDs, it is challenging to access the FTL (Flash Translation Lay
 % 따라서, [] 기술은 연구 활동에서 aging에 걸리는 시간을 없애주어, 혁신적인 저장 장치 개발을 촉진합니다. 
 In this paper, we introduce the aging snapshot method, []. 
 This method allows for the utilization of an entire storage snapshot, enabling the use of fast-aged storage devices. 
-By employing the emulator NVMeVirt to create snapshots, we can also replicate information related to the VPN (Virtual Private Network). 
+By employing the emulator NVMeVirt to create snapshots, we can also replicate information related to the VPN (Virtual Physical Number). 
 Additionally, by copying the FTL (Flash Translation Layer) as well, we can address the issue of physical fragmentation.
 
 Furthermore, to assist users in handling the snapshots we provide, we have the capability to reduce the size of the snapshots. 
