@@ -41,7 +41,7 @@ plt.grid(linestyle='dotted', linewidth=0.5)
 
 #plt.title('Page Allocation Latency')
 plt.xlabel('Round')
-plt.ylabel('Grep Latency')
+plt.ylabel('Latency (unit..)')
 plt.legend(loc='upper right', ncol=1, prop={'size': 8})
 
 plt.tight_layout()
