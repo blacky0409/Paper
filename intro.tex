@@ -25,28 +25,28 @@
 
 % 이렇게 낭비되는 시간은, 연구있어서 critical합니다.
 
-Beyond conventional SSDs, new types such as ZNS (Zoned Namespace SSD), OCSSD (Open Channel SSD), KVSSD (Key-Value SSD), and the recently spotlighted FDP (Flexible Data Placement) are focusing on improving performance and density, making storage devices smarter and more capable. 
+Beyond conventional SSDs, new types such as ZNS (Zoned Namespace SSD), OCSSD (Open Channel SSD), KVSSD (Key-Value SSD), and the recently spotlighted FDP (Flexible Data Placement) are focusing on improving performance and density, making storage devices smarter and more capable.
 These new types of devices are diversifying the storage environment, leading to various research efforts to explore new conditions.
-For example, in the case of ZNS, research has aimed to address the shortcomings of existing OS Swap technology. 
+For example, in the case of ZNS, research has aimed to address the shortcomings of existing OS Swap technology.
 As older types of storage devices have been developed, they have prompted numerous research initiatives.
 
 As the performance of storage devices improves, fragmentation, which previously was not a major issue, is now affecting the performance of these devices.
 While new products may demonstrate theoretical performance, actual use tends to degrade performance over time due to fragmentation issues.
 
-Figures [] and [] illustrate the latency and dynamic layout score according to the usage level of the storage device. 
+Figures [] and [] illustrate the latency and dynamic layout score according to the usage level of the storage device.
 The dynamic layout score in Fig [] reflects the degree of fragmentation of the file system, where a lower score indicates more significant fragmentation.
 As shown in the graphs, the degree of fragmentation of storage devices increases with usage. Accordingly, as seen in Fig [], latency increases as well.
 The dynamic layout score converges, leading to a convergence in latency. This pattern is consistent across both F2fs and ext4 file systems.
 
 For this reason, regardless of the type of storage device used, it is imperative to age the storage device first when conducting new research.
 
-Several tools are available for aging storage devices [[tbbt:fast05, impressions:fast09, conway:login17]]. 
-However, collecting live system data during the aging process is time-consuming, and since the traces are quite large, the duration required for aging is significantly extended [[fs-aging:sigmetrics97]]. 
+Several tools are available for aging storage devices [[tbbt:fast05, impressions:fast09, conway:login17]].
+However, collecting live system data during the aging process is time-consuming, and since the traces are quite large, the duration required for aging is significantly extended \cite{fs_aging:sigmetrics97}.
 Figure [] shows the degree of aging over time. Smaller-sized storage devices tend to age faster, but still, considerable time is required.
 
 Given the performance and density improvements of storage devices, the use of TB-sized storage devices in practical applications will demand even more time for aging for research purposes.
 
-% Goal Setting => snapshot을 만들자 => 단순 복사로는 물리적 조각화를 구현 못함. 논리적 조각화는 많은 반복/ 구성/ 설정이 필요함 => snapshot을 이용하자자 
+% Goal Setting => snapshot을 만들자 => 단순 복사로는 물리적 조각화를 구현 못함. 논리적 조각화는 많은 반복/ 구성/ 설정이 필요함 => snapshot을 이용하자자
 %-------------------------------------------------------------------------
 % 낭비되는 시간이 없는 연구활동을 위해 빠른 aging방법이 필요합니다.
 % 어떤 aging 시키는 도구를 사용하든 상당한 시간을 사용해야 할것이기 때문에 저희의 요구 사항을 완전히 충족하지 못합니다.
@@ -57,16 +57,16 @@ Given the performance and density improvements of storage devices, the use of TB
 % 2절에서 설명할 physical fragmentation은 논리적 주소 공간과 물리적 주소 공간간의 불일치에서 발생하기 때문입니다.
 % 일반적인 SSD에서는 FTL에 접근하기 힘들기 때문에 이와 같은 문제를 재현하기 어렵습니다.
 
-For research activities that do not waste time, a fast aging method is essential. 
-However, regardless of the aging tool used, it will require significant time, which does not fully meet our requirements. 
+For research activities that do not waste time, a fast aging method is essential.
+However, regardless of the aging tool used, it will require significant time, which does not fully meet our requirements.
 Additionally, there is currently no appropriate method to precisely precondition storage devices that we want to age.
 Therefore, an alternative method is necessary.
 
-We propose providing users with snapshots of the entire storage that has already been aged. 
-Users can then utilize this snapshot to use the aged storage device within a short time frame. 
+We propose providing users with snapshots of the entire storage that has already been aged.
+Users can then utilize this snapshot to use the aged storage device within a short time frame.
 Simple copying does not adequately replicate all fragmentation.
 
-The physical fragmentation explained in section 2 arises from the mismatch between logical address space and physical address space. 
+The physical fragmentation explained in section 2 arises from the mismatch between logical address space and physical address space.
 In conventional SSDs, it is challenging to access the FTL (Flash Translation Layer), making it difficult to address such issues.
 
 % Contribution
@@ -77,14 +77,14 @@ In conventional SSDs, it is challenging to access the FTL (Flash Translation Lay
 % 그리고, FTL도 그대로 복사할 수 있어 physical fragmentation에 대한 문제도 해결할 수 있게 됩니다.
 % 추가적으로, 우리가 제공할 snapshot을 사용자가 쉽게 다루기 위해, snapshot의 크기를 줄이는 능력도 가지고 있습니다.
 % 사용자는 다양한 저장장치에서 다양한 조건에 맞는 snapshot을 가지고 빠른 aging된 저장장치를 구성할 수 있습니다.
-% 따라서, [] 기술은 연구 활동에서 aging에 걸리는 시간을 없애주어, 혁신적인 저장 장치 개발을 촉진합니다. 
-In this paper, we introduce the aging snapshot method, []. 
-This method allows for the utilization of an entire storage snapshot, enabling the use of fast-aged storage devices. 
-By employing the emulator NVMeVirt to create snapshots, we can also replicate information related to the VPN (Virtual Physical Number). 
+% 따라서, [] 기술은 연구 활동에서 aging에 걸리는 시간을 없애주어, 혁신적인 저장 장치 개발을 촉진합니다.
+In this paper, we introduce the aging snapshot method, [].
+This method allows for the utilization of an entire storage snapshot, enabling the use of fast-aged storage devices.
+By employing the emulator NVMeVirt to create snapshots, we can also replicate information related to the VPN (Virtual Physical Number).
 Additionally, by copying the FTL (Flash Translation Layer) as well, we can address the issue of physical fragmentation.
 
-Furthermore, to assist users in handling the snapshots we provide, we have the capability to reduce the size of the snapshots. 
-Users can build fast-aged storage devices tailored to various conditions with different snapshots from various storage devices. 
+Furthermore, to assist users in handling the snapshots we provide, we have the capability to reduce the size of the snapshots.
+Users can build fast-aged storage devices tailored to various conditions with different snapshots from various storage devices.
 Thus, the [] technology eliminates the time spent in aging during research activities, promoting the innovative development of storage devices.
 
 % Paper Progress => 이부분...

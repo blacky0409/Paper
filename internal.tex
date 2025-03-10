@@ -123,7 +123,7 @@ Through our research, we aim to facilitate the rapid creation of aged SSDs for f
 % NVMeVirt는 소프트웨어로 정의된 NVMe 장치로, 리눅스 커널 모듈로 구현되어 있으며, 기존 NVMe 인터페이스를 사용하여 다양한 저장 장치를 모방하는 기능을 제공합니다.
 % 주 목적은 고급 저장 장치를 개발하고 연구할 수 있는 환경을 제공하는 것으로, 실제 저장 장치와 유사한 방식으로 동작하게 됩니다.
 
-NVMeVirt is a software-defined NVMe device implemented as a Linux kernel module, providing the capability to emulate various storage devices using the existing NVMe interface. 
+NVMeVirt is a software-defined NVMe device implemented as a Linux kernel module, providing the capability to emulate various storage devices using the existing NVMe interface.
 The primary objective is to offer an environment for developing and researching advanced storage devices, operating in a manner similar to actual storage devices.
 
 % development => How Work?
@@ -134,12 +134,12 @@ The primary objective is to offer an environment for developing and researching 
     \label{fig:structure}
 \end{figure}
 
-% NVMeVirt는 다양한 구성 요소로 이루어진 소프트웨어 정의 NVMe 장치로, 내부 구조는 FTL(Flash Translation Layer) 인스턴스, 채널, 다이(die), 블록, 페이지를 포함하여 데이터 처리를 수행합니다. 
-% PCIe 링크를 통해 직렬화된 데이터 전송에도 불구하고, FTL은 여러 NAND 채널과 다이를 통해 데이터 I/O 요청을 병렬로 처리합니다. 
+% NVMeVirt는 다양한 구성 요소로 이루어진 소프트웨어 정의 NVMe 장치로, 내부 구조는 FTL(Flash Translation Layer) 인스턴스, 채널, 다이(die), 블록, 페이지를 포함하여 데이터 처리를 수행합니다.
+% PCIe 링크를 통해 직렬화된 데이터 전송에도 불구하고, FTL은 여러 NAND 채널과 다이를 통해 데이터 I/O 요청을 병렬로 처리합니다.
 % 이러한 아키텍처에서 FTL은 다이와 채널을 조정하여 효율적인 데이터 처리를 진행하며, 각 다이는 독립적으로 작동하여 성능을 극대화합니다.
 
-NVMeVirt is a software-defined NVMe device composed of various components, with its internal structure performing data processing through instances of the Flash Translation Layer (FTL), channels, dies, blocks, and pages. 
-Despite serialized data transmission over the PCIe link, the FTL processes data I/O requests in parallel through multiple NAND channels and dies. 
+NVMeVirt is a software-defined NVMe device composed of various components, with its internal structure performing data processing through instances of the Flash Translation Layer (FTL), channels, dies, blocks, and pages.
+Despite serialized data transmission over the PCIe link, the FTL processes data I/O requests in parallel through multiple NAND channels and dies.
 In this architecture, the FTL coordinates the dies and channels to enable efficient data processing, with each die operating independently to maximize performance.
 
 \begin{figure}[t]
@@ -149,52 +149,52 @@ In this architecture, the FTL coordinates the dies and channels to enable effici
     \label{fig:making}
 \end{figure}
 
-% 시스템 초기화 시 물리적 주소 공간의 일부를 예약하여 필요한 메모리를 확보하고, 이 예약된 메모리는 I/O 작업자, NVMeV 코어 디스패처 및 SSD 코어 등 NVMeVirt의 주요 구성 요소에 데이터를 저장하고 관리하는 데 사용됩니다. 
+% 시스템 초기화 시 물리적 주소 공간의 일부를 예약하여 필요한 메모리를 확보하고, 이 예약된 메모리는 I/O 작업자, NVMeV 코어 디스패처 및 SSD 코어 등 NVMeVirt의 주요 구성 요소에 데이터를 저장하고 관리하는 데 사용됩니다.
 % 사용자는 구성 파일을 통해 SSD의 종류를 지정하고 메모리의 시작과 끝 주소를 설정할 수 있어, 다채로운 구성 옵션을 선택택할 수 있습니다.
 
-% 내부적으로 디스패처와 I/O 작업자가 상호작용하며 네이티브 NVMe 장치처럼 데이터를 처리합니다. 
-% 이러한 에뮬레이션 방식은 저장 장치 연구와 엔지니어링을 위한 다재다능함을 보여줍니다. 
-% 더불어 NVMeVirt는 다양한 저장 장치 유형인 일반 SSD, NVM SSD, ZNS SSD, 키-값 SSD를 지원하며, 다양한 저장 장치 인스턴스를 생성하여 연구자들이 여러 SSD 아키텍처를 실험하고 분석할 수 있는 기회를 제공합니다. 
+% 내부적으로 디스패처와 I/O 작업자가 상호작용하며 네이티브 NVMe 장치처럼 데이터를 처리합니다.
+% 이러한 에뮬레이션 방식은 저장 장치 연구와 엔지니어링을 위한 다재다능함을 보여줍니다.
+% 더불어 NVMeVirt는 다양한 저장 장치 유형인 일반 SSD, NVM SSD, ZNS SSD, 키-값 SSD를 지원하며, 다양한 저장 장치 인스턴스를 생성하여 연구자들이 여러 SSD 아키텍처를 실험하고 분석할 수 있는 기회를 제공합니다.
 
-During system initialization, a portion of the physical address space is reserved to secure the necessary memory, which is utilized to store and manage data for the key components of NVMeVirt, such as the I/O worker, NVMeV core dispatcher, and SSD core. 
+During system initialization, a portion of the physical address space is reserved to secure the necessary memory, which is utilized to store and manage data for the key components of NVMeVirt, such as the I/O worker, NVMeV core dispatcher, and SSD core.
 Users can specify the type of SSD and set the starting and ending addresses of the memory through a configuration file, allowing for a variety of configuration options.
 
-Internally, the dispatcher and I/O worker interact and process data like a native NVMe device. 
-This emulation approach demonstrates versatility for storage device research and engineering. 
+Internally, the dispatcher and I/O worker interact and process data like a native NVMe device.
+This emulation approach demonstrates versatility for storage device research and engineering.
 Additionally, NVMeVirt supports various types of storage devices, including standard SSDs, NVM SSDs, ZNS SSDs, and key-value SSDs, providing researchers with opportunities to create multiple SSD instances for experimentation and analysis of different SSD architectures.
 
-% trun => Others 
+% trun => Others
 
-% SSD를 시뮬레이션하거나 에뮬레이션하기 위한 여러 도구는 이미 존재합니다. 
-% 시뮬레이터는 데이터 처리 모델을 사용하여 실제 장치의 내부 작업을 모방합니다. 
-% 이들의 주요 목적은 장치 모델을 구축하고 내부 작업의 성능을 매개변수화하여 모델에서 원하는 성능 메트릭을 계산하는 것입니다. 
+% SSD를 시뮬레이션하거나 에뮬레이션하기 위한 여러 도구는 이미 존재합니다.
+% 시뮬레이터는 데이터 처리 모델을 사용하여 실제 장치의 내부 작업을 모방합니다.
+% 이들의 주요 목적은 장치 모델을 구축하고 내부 작업의 성능을 매개변수화하여 모델에서 원하는 성능 메트릭을 계산하는 것입니다.
 % 결과적으로, 상세한 분석이 가능하지만 전체 시스템을 시뮬레이션할 경우 실제 작업을 실행하는 데 시간이 지연될 수 있기 때문에 저희의 연구에서는 알맞지 않습니다.
 
-% 에뮬레이터인 FlexDrive는 기존 SSD 유형만 에뮬레이션할 수 있고 KVSSD 및 ZNS SSD와 같은 장치는 지원하지 않습니다. 
-% 우리의 연구는 새로운 연구를 수행할 때 소요되는 노화 시간을 최소화하는 것을 목표로 하였기에, 다양한 장치에서 활용 가능한 에뮬레이터를 탐색하고자 하였습니다. 
-% 또 다른 에뮬레이터 장치 FEMU는 장치 가상화 기능을 활용하여 게스트 운영 체제에 가상 NVMe 장치를 제공합니다. 
+% 에뮬레이터인 FlexDrive는 기존 SSD 유형만 에뮬레이션할 수 있고 KVSSD 및 ZNS SSD와 같은 장치는 지원하지 않습니다.
+% 우리의 연구는 새로운 연구를 수행할 때 소요되는 노화 시간을 최소화하는 것을 목표로 하였기에, 다양한 장치에서 활용 가능한 에뮬레이터를 탐색하고자 하였습니다.
+% 또 다른 에뮬레이터 장치 FEMU는 장치 가상화 기능을 활용하여 게스트 운영 체제에 가상 NVMe 장치를 제공합니다.
 % 그러나 가상 머신 환경에서는 게스트 물리 메모리가 호스트의 가상 메모리 시스템을 통해 호스트의 물리 메모리에 분산되어 있어 불편할 수 있으며, 실험 중 재부팅이 필요하다는 번거로움이 있습니다.
 
-Several tools already exist for simulating or emulating SSDs. 
-These simulators use data processing models to mimic the internal operations of actual devices. 
-Their main purpose is to build device models and parameterize the performance of internal operations to calculate the desired performance metrics from the models. 
+Several tools already exist for simulating or emulating SSDs.
+These simulators use data processing models to mimic the internal operations of actual devices.
+Their main purpose is to build device models and parameterize the performance of internal operations to calculate the desired performance metrics from the models.
 As a result, while detailed analysis is possible, simulating the entire system can introduce delays in executing actual tasks, making it unsuitable for our research.
 
-The emulator FlexDrive can only emulate existing types of SSDs and does not support devices such as KVSSD and ZNS SSDs. 
-Since our research aimed to minimize the aging time required for conducting new studies, we sought to explore emulators that could be utilized across various devices. 
-Another emulator device, FEMU, leverages device virtualization to provide virtual NVMe devices to guest operating systems. 
+The emulator FlexDrive can only emulate existing types of SSDs and does not support devices such as KVSSD and ZNS SSDs.
+Since our research aimed to minimize the aging time required for conducting new studies, we sought to explore emulators that could be utilized across various devices.
+Another emulator device, FEMU, leverages device virtualization to provide virtual NVMe devices to guest operating systems.
 However, in a virtual machine environment, the guest physical memory is distributed across the host's physical memory via the host's virtual memory system, which can be inconvenient, and it also requires rebooting during experiments.
 
 % conclusion => Advantages over others
 
 % 반대로, NVMeVirt는 개발자가 NVMe 인터페이스 레이어를 손쉽게 수정할 수 있도록 하여 다양한 설계 공간을 탐색하고 새로운 장치 유형을 지원할 수 있는 유연성을 제공합니다.
-% 또한, 가상화 기술에 의존하지 않기 때문에 낮은 오버헤드로 포괄적인 통신 모델을 구현할 수 있으며, 모듈식 설계를 통해 모듈 로딩이 용이합니다. 
+% 또한, 가상화 기술에 의존하지 않기 때문에 낮은 오버헤드로 포괄적인 통신 모델을 구현할 수 있으며, 모듈식 설계를 통해 모듈 로딩이 용이합니다.
 % 이러한 특성 덕분에 우리는 NVMeVirt를 기반으로 연구를 진행하게 되었습니다.
 % 추가적으로, NVMeVirt를 활용함으로써 FTL에 직접 접근할 수 있는 부가적인 이점을 얻었습니다.
 
-Conversely, NVMeVirt provides developers with the flexibility to easily modify the NVMe interface layer, allowing them to explore various design spaces and support new device types. 
-Additionally, by not relying on virtualization technology, it can implement a comprehensive communication model with low overhead, and the modular design facilitates easy module loading. 
-Thanks to these characteristics, we proceeded with our research based on NVMeVirt. 
+Conversely, NVMeVirt provides developers with the flexibility to easily modify the NVMe interface layer, allowing them to explore various design spaces and support new device types.
+Additionally, by not relying on virtualization technology, it can implement a comprehensive communication model with low overhead, and the modular design facilitates easy module loading.
+Thanks to these characteristics, we proceeded with our research based on NVMeVirt.
 Furthermore, leveraging NVMeVirt offers the additional advantage of direct access to the FTL.
 
 %-------------------------------------------------------------------------
@@ -210,7 +210,7 @@ Furthermore, leveraging NVMeVirt offers the additional advantage of direct acces
 \end{figure*}
 
 There are four main types of data that need to be retrieved from the aged SSD on NVMeVirt.
-% 1. FTL 
+% 1. FTL
 First, the metadata of the SSD related to the FTL must be obtained.
 Unlike actual SSDs, the FTL in NVMeVirt primarily performs the task of calculating request times.
 When storing data in actual storage, it uses Logical Block Addresses (LBA) instead of Physical Page Addresses (PPA), eliminating the need to convert LBA to PPA for disk I/O assistance.
