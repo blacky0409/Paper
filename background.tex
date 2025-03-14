@@ -42,33 +42,35 @@ Therefore, logical fragmentation and physical fragmentation can occur independen
 \begin{figure*}
     \centering
     \includegraphics[width=0.95\textwidth]{fragmentation}
-	\caption{Kinds of fragmentation in filesystems and storage devices}
+	\caption{Types of fragmentation in filesystems and storage devices
+		\SK{Free와 data그림을 서로 나눠주세요. Data 쪽에서 Pysical 오타 수정 필요.}
+	}
     \label{fig:fragmentation}
 \end{figure*}
 
 % Intro
 Fragmentation in computer systems refers to the condition in which free space or data is scattered across non-contiguous locations.
 Fragmentation can be categorized into two primary types: \emph{free space fragementation} and \emph{data fragmentation}.
-% Free space
+% Free space fragmentation
 Free space fragmentation can be further classified as internal or external fragmentation~\cite{osteps,os-textbook}.
 Internal fragmentation occurs when a system employs fixed-size allocation policies, leading to allocated regions containing unused space.
 In contrast, external fragmentation occurs when a system repeatedly allocates and deallocates variable-sized chunks.
-Through the operations, free space can be divided into into small non-contiguous fragments.
+Through the operations, free space can be divided into into small non-contiguous fragments as illustrated in Figure~\ref{fig:fragementation}-free.
 This scattered free space makes it difficult to allocate large contiguous blocks, even if the total available free space is sufficient.
 
 
 % Data fragmentation
 Similar to free space, data can be fragmented in computer systems.
 In the context of filesystems, data fragmentation occurs when a file is stored in non-contiguous locations in a storage device.
-As illustrated in Figure~\ref{fig:fragmentation}-data, a file may be split into multiple chunks and stored in a fragmented manner.
+A file may be split into multiple chunks and stored in a fragmented manner.
 Notably, data fragementation can occur even when enough contiguous space is available to store the entire file, due to prior fragementation or allocation policies.
 
 % Logical fragmentation
-Data fragmentation can happen in two forms: \emph{logical fragmentation} and \emph{physical fragmentation}~\cite{janusd:atc17}.
-Logical fragementation occures primarily due to the space allocation policies of filesystems.
-Modern storage devices expose their storage space based on logical block address~(LBA), and the host specifies the target data for operations using a starting logical block number~(LBN) and the number of consecutive logical blocks.
-Consequently, a filesystem must make one I/O request per contiguous LBA chunk.
+As illustrated in Figure~\ref{fig:fragmentation}-data, data fragmentation can happen in two forms: \emph{logical fragmentation} and \emph{physical fragmentation}~\cite{janusd:atc17}.
+Modern storage devices expose their storage space through logical block addresses~(LBAs), and the host specifies the target data for operations using a starting logical block number~(LBN) and the number of consecutive logical blocks.
+Consequently, filesystems must make one I/O request per contiguous LBA chunk.
 When a file is fragmented, the filesystem must generate more I/O requests than unfragmented data, thereby experiencing increased interfacing overhead.
+Logical fragementation occures primarily due to the space allocation policies of filesystems.
 
 % Physical fragmentation
 Physical fragmentation originates from the discrepancy between logical and phycal address spaces.
@@ -76,11 +78,11 @@ Modern storage devices often utilize high-density storage media with complex cha
 Additionally, they typically employ sophisticated data paths and highly parallel architectures for delivering high performance.
 As a result, the logical address space exposed to the host does not necessarily align with the physical address space on the storage media and underlying archtecutre.
 Consequently, even if the host issues a single request for a logically contiguous chunk, the device may process it through multiple internal operations.
-This is becoming more pronounced in recent devices, where interfacing overhead becomes a non-negligible portion of overall performance~\cite{Problem_in_SSD_Empirical,senescence:fast17,Problem_in_SSD_Mobile_Devices,survey:ictc23,no-afraid:fast24,defrag-mobile:atc17,fragpicker:sosp21}.
+This is becoming more pronounced in recent devices, where interfacing overhead becomes a non-negligible portion of overall performance~\cite{Problem_in_SSD_Empirical,senescence:fast17,Problem_in_SSD_Mobile_Devices,survey:ictc23,no-afraid:fast24,defrag-mobile:atc17,fragpicker:sosp21}\SK{이거 전부 physical frag관련인가요? logical / physical 분류해서 나눠주세요}.
 
 
 %-------------------------------------------------------------------------
-\subsection{Flash Translation Layer}\label{ss:ftl}
+\subsection{Flash Translation Layer*}\label{ss:ftl}
 
 \begin{comment}
 Programs based on the filesystem of a typical operating system recognize disks on a sector basis.

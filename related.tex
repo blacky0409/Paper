@@ -2,13 +2,13 @@
 \label{s:related}
 
 % Fragmentation
-Many studies have attempted to study the fragmentation's characteristics and the implication on performance.
-To resolve fragmentation, it is necessary to either prevent its occurrence or convert fragmented files into contiguous files to restore file access performance.
+Many studies have been carried out to study the characteristics of fragmentation and its implication on performance~\cite{}.
+To resolve fragmentation, it is necessary to either prevent it from happening~\cite{} or convert fragmented files into contiguous files to restore file access performance~\cite{}.
 Despite these efforts, fragmentation continues to pose problems.
 As a result, researchers age SSDs to create an environment similar to that of SSDs used in real-life scenarios before conducting their studies.
 Numerous studies have been conducted for this purpose, and various tools are available.
 
-Geriatrix\cite{geriatrix:atc18} is an aging tool that, unlike previous studies, induces fragmentation not only in allocated files but also in remaining free space.
+Geriatrix~\cite{geriatrix:atc18} is an aging tool that, unlike previous studies, induces fragmentation not only in allocated files but also in remaining free space.
 Previous aging tools only targeted fragmentation in allocated files.
 Consequently, earlier approaches failed to adequately reproduce the effects of free space fragmentation and device aging on the SSD's filesystem.
 However, Geriatrix manages filesystem aging using various built-in aging profiles. These profiles are based on common parameters that affect the disk layout of files, setting the distribution of file sizes and directory depths, which in turn influences the creation and deletion of files of different sizes. Through this, Geriatrix can effectively reproduce the free space fragmentation that occurs in natural aging.
