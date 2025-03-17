@@ -66,6 +66,7 @@ A file may be split into multiple chunks and stored in a fragmented manner.
 Notably, data fragementation can occur even when enough contiguous space is available to store the entire file, due to prior fragementation or allocation policies.
 
 % Logical fragmentation
+\textbf{Logical fragementation}.
 As illustrated in Figure~\ref{fig:fragmentation}-data, data fragmentation can happen in two forms: \emph{logical fragmentation} and \emph{physical fragmentation}~\cite{janusd:atc17}.
 Modern storage devices expose their storage space through logical block addresses~(LBAs), and the host specifies the target data for operations using a starting logical block number~(LBN) and the number of consecutive logical blocks.
 Consequently, filesystems must make one I/O request per contiguous LBA chunk.
@@ -73,13 +74,13 @@ When a file is fragmented, the filesystem must generate more I/O requests than u
 Logical fragementation occures primarily due to the space allocation policies of filesystems.
 
 % Physical fragmentation
+\textbf{Physical fragementation}.
 Physical fragmentation originates from the discrepancy between logical and phycal address spaces.
 Modern storage devices often utilize high-density storage media with complex characteristics and inherent limitations.
 Additionally, they typically employ sophisticated data paths and highly parallel architectures for delivering high performance.
 As a result, the logical address space exposed to the host does not necessarily align with the physical address space on the storage media and underlying archtecutre.
 Consequently, even if the host issues a single request for a logically contiguous chunk, the device may process it through multiple internal operations.
-This is becoming more pronounced in recent devices, where interfacing overhead becomes a non-negligible portion of overall performance~\cite{Problem_in_SSD_Empirical,senescence:fast17,Problem_in_SSD_Mobile_Devices,survey:ictc23,no-afraid:fast24,defrag-mobile:atc17,fragpicker:sosp21}\SK{이거 전부 physical frag관련인가요? logical / physical 분류해서 나눠주세요}.
-
+This is becoming more pronounced in recent devices, where interfacing overhead becomes a non-negligible portion of overall performance~\cite{Problem_in_SSD_Empirical,senescence:fast17,Problem_in_SSD_Mobile_Devices,survey:ictc23,no-afraid:fast24,defrag-mobile:atc17,fragpicker:sosp21}
 
 %-------------------------------------------------------------------------
 \subsection{Flash Translation Layer*}\label{ss:ftl}

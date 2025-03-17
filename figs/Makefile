@@ -1,5 +1,5 @@
 .PHONY: all
-all: ssd.pdf nvmev-making.pdf fragmentation.pdf mapping-table.pdf ftl-role.pdf
+all: ssd.pdf nvmev-making.pdf free-fragmentation.pdf data-fragmentation.pdf mapping-table.pdf ftl-role.pdf
 
 .PHONY: clean
 clean:
@@ -23,12 +23,15 @@ ssd.pdf: pg1.pdf
 nvmev-making.pdf: pg2.pdf
 	@mv $< $@
 
-fragmentation.pdf: pg3.pdf
+free-fragmentation.pdf: pg3.pdf
 	@mv $< $@
 
-mapping-table.pdf: pg4.pdf
+data-fragmentation.pdf: pg4.pdf
 	@mv $< $@
 
-ftl-role.pdf: pg5.pdf
+mapping-table.pdf: pg5.pdf
+	@mv $< $@
+
+ftl-role.pdf: pg6.pdf
 	@mv $< $@
 
