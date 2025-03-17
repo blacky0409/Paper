@@ -11,11 +11,14 @@
 % 저장 장치의 성능이 개선됨에 따라 이전에는 큰 문제가 아니였던 fragmentation이 저장 장치 성능에 영향을 미치고 있습니다.
 % 새 제품의 저장장치의 성능은 이론적인 성능을 보여줍니다. 하지만, 저장 장치를 사용하면 사용할 수록, 저장장치의 성능이 하락하게 됩니다.
 % 이것은 저장장치의 fragmentation 때문입니다.
+%-------------
+% 이부분은 eval파트로
 % Fig[]와 Fig[]은 저장 장치의 사용정도에 따른 latency와 dynamic layout score[]에 대한 그래프입니다.
 % Fig[]의 dynamic layout score은 파일 시스템의 단편화 정도를 점수로 나타낸 것입니다. 점수가 낮을 수록 단편화가 더욱 진행된 것입니다.
 % 그래프에서 보이는 것과 같이, 장치를 사용하면 사용할 수록 저장장치의 단편화 정도는 커지는 것을 볼 수 있습니다.
 % 이와 비례하여 Fig[]에서 보이 듯, latency는 올라가게 됩니다. dynamic layout  score가 수렴함에 따라 latency 또한 수렴하게 됩니다.
 % 이런 특징은 F2fs와 ext4 모두에서 같은 양상을 보입니다.
+%--------------
 % 이러한 이유로, 어떤 저장장치의 유형을 사용하던, 새로운 연구를 진행할 때는 가장 먼저 저장 장치를 노화시켜야 합니다.
 
 % 저장장치를 노화시키기 위한 도구는 여러개가 있습니다.[tbbt:fast05,impressions:fast09,conway:login17]
@@ -27,22 +30,24 @@
 
 Beyond conventional SSDs, new types such as ZNS (Zoned Namespace SSD), OCSSD (Open Channel SSD), KVSSD (Key-Value SSD), and the recently spotlighted FDP (Flexible Data Placement) are focusing on improving performance and density, making storage devices smarter and more capable.
 These new types of devices are diversifying the storage environment, leading to various research efforts to explore new conditions.
-For example, in the case of ZNS, research has aimed to address the shortcomings of existing OS Swap technology~\cite{}.
+For example, in the case of ZNS, research has aimed to address the shortcomings of existing OS Swap technology~\cite{znswap}.
 As older types of storage devices have been developed, they have prompted numerous research initiatives.
 
 As the performance of storage devices improves, fragmentation, which previously was not a major issue, is now affecting the performance of these devices.
 While new products may demonstrate theoretical performance, actual use tends to degrade performance over time due to fragmentation issues.
-
-Figures [] and [] illustrate the latency and dynamic layout score according to the usage level of the storage device.
-The dynamic layout score in Fig [] reflects the degree of fragmentation of the file system, where a lower score indicates more significant fragmentation.
-As shown in the graphs, the degree of fragmentation of storage devices increases with usage. Accordingly, as seen in Fig [], latency increases as well.
-The dynamic layout score converges, leading to a convergence in latency. This pattern is consistent across both F2fs and ext4 file systems.
-
 For this reason, regardless of the type of storage device used, it is imperative to age the storage device first when conducting new research.
-
-Several tools are available for aging storage devices [[tbbt:fast05, impressions:fast09, conway:login17]].
-However, collecting live system data during the aging process is time-consuming, and since the traces are quite large, the duration required for aging is significantly extended \cite{fs_aging:sigmetrics97}.
-Figure [] shows the degree of aging over time. Smaller-sized storage devices tend to age faster, but still, considerable time is required.
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.95\columnwidth]{graphs/aging-duration}
+    \caption{Duration to Aging}
+    \label{fig:aging-duration}
+\end{figure}
+Several tools are available for aging storage devices~\cite{tbbt:fast05, impressions:fast09, conway:login17}.
+However, collecting live system data during the aging process is time-consuming, and since the traces are quite large, the duration required for aging is significantly extended \cite{fs-aging:sigmetrics97}.
+\ref{fig:aging-duration} represents the number of rounds it takes for the storage to age. 
+Each round takes 10 minutes. 
+We measured the time taken when the storage sizes are 16G, 32G, and 128G, and observed that as the size increases, the time required for aging also increases. 
+In our experiment, we conducted tests in a small storage scenario, yet it still required a significant amount of time
 
 Given the performance and density improvements of storage devices, the use of TB-sized storage devices in practical applications will demand even more time for aging for research purposes.
 

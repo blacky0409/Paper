@@ -4,7 +4,7 @@ import matplotlib
 import matplotlib.pyplot as plt
 import numpy as np
 
-f = open("./sample-boxes", "r")
+f = open("./aging-duration", "r")
 lines = f.readlines()
 data1 = []
 data2 = []
@@ -32,17 +32,18 @@ print((data1[-1] + large2_x[-1] + large3_x[-1]) / 3)
 '''
 
 x = np.arange(len(lines))
-width = 0.3
+width = 0.2
 
-plt.bar(x - 0.15, data1, width, edgecolor='black', color='C0', linewidth=0.5, label='A')
-plt.bar(x + 0.15, data2, width, edgecolor='black', color='C1', linewidth=0.5, label='A')
+plt.bar(x - 0.15, data1, width, edgecolor='black', color='C0', linewidth=0.5, label='16G')
+plt.bar(x + 0.15, data2, width, edgecolor='black', color='C1', linewidth=0.5, label='64G')
 
 plt.grid(linestyle='dotted', linewidth=0.5)
 
 #plt.title('Page Allocation Latency')
-plt.xlabel('X-axis')
-plt.ylabel('Values (second)')
+plt.xlabel('')
+plt.xticks([])
+plt.ylabel('Round')
 plt.legend(loc='upper left', ncol=1, prop={'size': 8})
 
 plt.tight_layout()
-plt.savefig('sample-boxes.pdf')
+plt.savefig('aging-duration.pdf')

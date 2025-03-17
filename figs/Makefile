@@ -5,7 +5,7 @@ all: ssd.pdf nvmev-making.pdf free-fragmentation.pdf data-fragmentation.pdf mapp
 clean:
 	@rm -f pg*.pdf \~* doc_data.txt
 
-%.pdf: %.odg
+%.pdf: %.pptx
 	$(SOFFICE) --convert-to-pdf $< -- outdir $(@D)
 	pdfcrop $@ $@
 
