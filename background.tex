@@ -43,28 +43,25 @@ Therefore, logical fragmentation and physical fragmentation can occur independen
 Fragmentation in computer systems refers to the condition in which free space or data is scattered across non-contiguous locations.
 Fragmentation can be categorized into two primary types: \emph{free space fragmentation} and \emph{data fragmentation}.
 
-\begin{figure}
-    \centering
-    \includegraphics[width=0.95\columnwidth]{free-fragmentation}
-	\caption{Types of fragmentation in filesystems
+\begin{figure*}[t]
+\centering
+	\subfloat[Free space fragmentation] {%
+		\includegraphics[width=0.95\columnwidth]{free-fragmentation}
+		\label{f:free-fragmentation}
 	}
-    \label{fig:free-fragmentation}
-\end{figure}
+	\subfloat[Data fragmentation] {%
+		\includegraphics[width=1.1\columnwidth]{data-fragmentation}
+		\label{f:data-fragmentation}
+	}
+	\caption{Types of fragmentations\label{f:fragmentation}}
+\end{figure*}
 
 % Free space fragmentation
 Free space fragmentation can be further classified as internal or external fragmentation~\cite{osteps,os-textbook}.
 Internal fragmentation occurs when a system employs fixed-size allocation policies, leading to allocated regions containing unused space.
 In contrast, external fragmentation occurs when a system repeatedly allocates and deallocates variable-sized chunks.
-Through the operations, free space can be divided into into small non-contiguous fragments as illustrated in Figure~\ref{fig:free-fragmentation}.
+Through the operations, free space can be divided into into small non-contiguous fragments as illustrated in Figure~\ref{f:free-fragmentation}.
 This scattered free space makes it difficult to allocate large contiguous blocks, even if the total available free space is sufficient.
-
-\begin{figure}
-    \centering
-    \includegraphics[width=1.1\columnwidth]{data-fragmentation}
-	\caption{Types of fragmentation in storage devices
-	}
-    \label{fig:data-fragmentation}
-\end{figure}
 
 % Data fragmentation
 Similar to free space, data can be fragmented in computer systems.
@@ -74,7 +71,7 @@ Notably, data fragmentation can occur even when enough contiguous space is avail
 
 % Logical fragmentation
 \textbf{Logical fragmentation}.
-As illustrated in Figure~\ref{fig:data-fragmentation}, data fragmentation can happen in two forms: \emph{logical fragmentation} and \emph{physical fragmentation}~\cite{janusd:atc17}.
+As illustrated in Figure~\ref{f:data-fragmentation}, data fragmentation can happen in two forms: \emph{logical fragmentation} and \emph{physical fragmentation}~\cite{janusd:atc17}.
 Modern storage devices expose their storage space through logical block addresses~(LBAs), and the host specifies the target data for operations using a starting logical block number~(LBN) and the number of consecutive logical blocks.
 Consequently, filesystems must make one I/O request per contiguous LBA chunk.
 When a file is fragmented, the filesystem must generate more I/O requests than unfragmented data, thereby experiencing increased interfacing overhead.
