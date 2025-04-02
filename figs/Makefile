@@ -1,3 +1,5 @@
+SOFFICE := /usr/bin/soffice 
+
 .PHONY: all
 all: ssd.pdf nvmev-making.pdf free-fragmentation.pdf data-fragmentation.pdf mapping-table.pdf ftl-role.pdf
 
@@ -5,11 +7,12 @@ all: ssd.pdf nvmev-making.pdf free-fragmentation.pdf data-fragmentation.pdf mapp
 clean:
 	@rm -f pg*.pdf \~* doc_data.txt
 
-%.pdf: %.pptx
-	$(SOFFICE) --convert-to-pdf $< -- outdir $(@D)
-	pdfcrop $@ $@
-
 figures.pdf: figures.pptx
+
+%.pdf: %.pptx
+	touch figures.pptx
+	$(SOFFICE) --convert-to pdf $< --outdir $(@D)
+	pdfcrop $@ $@
 
 pg%.pdf: figures.pdf
 	@echo "Working on page $*"
