@@ -77,20 +77,20 @@ As illustrated in Figure~\ref{f:data-fragmentation}, data fragmentation can happ
 Modern storage devices expose their storage space through logical block addresses~(LBAs), and the host specifies the target data for operations using a starting logical block number~(LBN) and the number of consecutive logical blocks.
 Consequently, filesystems must make one I/O request per contiguous LBA chunk.
 When a file is fragmented, the filesystem must generate more I/O requests than unfragmented data, thereby experiencing increased interfacing overhead.
-Logical fragmentation occures primarily due to the space allocation policies of filesystems.
+Logical fragmentation occurs primarily due to the space allocation policies of filesystems.
 
 % Physical fragmentation
-Physical fragmentation originates from the discrepancy between logical and phycal address spaces.
+Physical fragmentation originates from the discrepancy between logical and physical address spaces.
 Modern storage devices often utilize high-density storage media with complex characteristics and inherent limitations.
 Additionally, they typically employ sophisticated data paths and highly parallel architectures for delivering high performance.
-As a result, the logical address space exposed to the host does not necessarily align with the physical address space on the storage media and underlying archtecutre.
+As a result, the logical address space exposed to the host does not necessarily align with the physical address space on the storage media and underlying architecture.
 Consequently, even if the host issues a single request for a logically contiguous chunk, the device may process it through multiple internal operations.
 This is becoming more pronounced in recent devices, where interfacing overhead becomes a non-negligible portion of overall performance~\cite{Problem_in_SSD_Empirical,senescence:fast17,Problem_in_SSD_Mobile_Devices,survey:ictc23,no-afraid:fast24,defrag-mobile:atc17,fragpicker:sosp21}
 
 
 
 %-------------------------------------------------------------------------
-\subsection{Flash Translation Layer*}\label{ss:ftl}
+\subsection{Flash Translation Layer}\label{ss:ftl}
 
 \begin{comment}
 Programs based on the filesystem of a typical operating system recognize disks on a sector basis.
@@ -111,24 +111,34 @@ However, accessing the SSD's FTL from the outside is not feasible due to reasons
 \end{comment}
 
 % Why FTL?
-Programs based on the filesystem of a typical operating system recognize disks on a sector basis.
-However, flash memory, which is used for building SSDs, is organized with pages and blocks.
-This means that sector-based programs cannot write directly to SSDs.
-Nevertheless, SSDs can easily accommodate these programs because they use the same host interface as HDDs.
-To facilitate this, 
-To bridge the gap and to faciliate the managing of flash storage, something is needed to assist SSDs in writing for sector-based programs, which is known as the flash translation layer~(FTL).
+Traditional storage devices, such as hard disk drives (HDDs), interface with the host system through a block-based interface.
+This block-based interface abstracts the storage device as a linear array of fixed-size logical sectors.
+In contrast, flash memory, which is the medium for solid-state drives (SSDs), is organized into pages and erase blocks.
+Data is accessed at the granularity of pages, however, flash memory imposes a significant constraint.
+Once data is written to a page, it cannot be overwritten immediately.
+Instead, the page must be erased before new data can be written.
+Moreover, this erase operation can only be performed at the erase block level, which consists of multiple pages.
+This erase-before-write constraint, coupled with the mismatch in access units between flash memory and traditional block-based interface, necessitates a translation mechanism.
+To this end, SSDs incorporate a firmware layer known as the flash translation layer~(FTL).
+
 
 % Mapping
-FTL performs two important functions within the SSD: logical block mapping and garbage collection~(GC).
-FTL is responsible for converting logical block addresses to physical address values to store logical sectors in physical pages, which is referred to as logical block mapping.
-The mapping is stored in the SSD's flash and cached in the memory for quick access and consists of a table containing logical block addresses~(LBA) and physical block addresses~(PBA).
-Additionally, SSDs cannot perform in-place updates.
-Therefore, when new data arrives, existing data must be deleted before the new data can be stored.
-At this time, the SSD uses GC to preemptively free up space for deleted data, which also contributes to the durability of the SSD.
+The FTL performs two essential functions within an SSD: address mapping and garbage collection~(GC).
+The FTL is responsible for translating sector-based logical addresses issued by the host into physical addresses consisting of flash blocks and pages.
+To perform the translation, FTL typically maintains a mapping table that is persisted in the flash storage and often cached in volatile memory for fast accesses.
+
+% Garbage collection
+The FTL also handles the erase-before-write constraint inherent in flash memory by employing an out-of-place update strategy.
+When new data is written, it is placed at a new physical location, and the old data is marked as invalid.
+Over time, this process leads to accumulation of invalid data.
+When the amount of free space falls below a threshold, the FTL reclaims invalidated space by relocating valid data and erasing blocks.
+This process not only recovers space but also contributes to the wear-leveling and overall durability of the SSD.
+
 
 % Private FTL
-However, accessing the FTL of SSDs from the outside of device is usually infeasible.
-SSD manufacturers make propritery designs due to reasons such as security and complexity.
-Such a hidden internal of FTL results in another issues.
-There have been studies to expose the internals of SSDs to the host~\cite{ocssd:fast17,zns:atc21,fdp}.
-However, the details of FTL implementations and configurations are not usually publicly available.
+Numerous FTL designs have been proposed, each aiming to balance trade-offs among performance, space efficiency, endurance, and implementation complexity~\cite{ftls,ftls,ftls}.
+However, SSD manufacturers often make proprietary designs due to concerns related to security and complexity.
+As a result, accessing or modifying the FTL from the outside of device is typically infeasible.
+This lack of transparency poses challenges for researchers and system developers who seek to understand, optimize, or customize storage behavior.
+To address this, several efforts have attempted to expose internal SSD management mechanisms to the host, such as Open-Channel SSDs~\cite{ocssd:fast17}, Zoned Namespace SSDs~\cite{zns:atc21}, and Flexible Data Placement~\cite{fdp}.
+Despite these initiatives, the concrete details of FTL implementations and configurations remain largely undisclosed in commercial devices.
