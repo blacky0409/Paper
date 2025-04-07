@@ -44,10 +44,13 @@ For this reason, regardless of the type of storage device used, it is imperative
 \end{figure}
 Several tools are available for aging storage devices~\cite{tbbt:fast05, impressions:fast09, conway:login17}.
 However, collecting live system data during the aging process is time-consuming, and since the traces are quite large, the duration required for aging is significantly extended \cite{fs-aging:sigmetrics97}.
-Figure~\ref{fig:aging-duration} represents the number of rounds it takes for the storage to age.
-Each round takes 10 minutes.
-We measured the time taken when the storage sizes are 16G, 32G, and 128G, and observed that as the size increases, the time required for aging also increases.
-In our experiment, we conducted tests in a small storage scenario, yet it still required a significant amount of time
+Figure~\ref{fig:aging-duration} shows the time it takes for storage devices to age. 
+Each round takes about 10 minutes, and experiments were conducted using SQLite and the ext4 file system with storage capacities of 16G, 32G, and 128G.
+The method for aging is as follows: in each round, small and large files of random sizes are generated randomly. 
+All small files are then deleted. If the utilization of the storage remains above a predefined threshold after deleting the small files, it is considered aged~\cite{Problem_in_SSD_Empirical}.
+The 64G storage took 2.7 times longer than the 16G storage to age, and the 128G storage took 1.6 times longer than the 64G storage. 
+This experiment was conducted in a scenario involving small storage devices, but the smallest 16G storage took 1870 minutes to reach aging. 
+This is a considerable amount of time, and in real applications where TB-sized storage devices are used, it would be a tedious wait to reach aging.
 
 Given the performance and density improvements of storage devices, the use of TB-sized storage devices in practical applications will demand even more time for aging for research purposes.
 
