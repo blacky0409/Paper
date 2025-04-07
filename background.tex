@@ -112,15 +112,16 @@ However, accessing the SSD's FTL from the outside is not feasible due to reasons
 
 % Why FTL?
 Programs based on the filesystem of a typical operating system recognize disks on a sector basis.
-However, in the case of flash memory which is used for building SSD, storage units are implemented based on pages and blocks.
+However, flash memory, which is used for building SSDs, is organized with pages and blocks.
 This means that sector-based programs cannot write directly to SSDs.
 Nevertheless, SSDs can easily accommodate these programs because they use the same host interface as HDDs.
-To facilitate this, something is needed to assist SSDs in writing for sector-based programs, which is known as the flash translation layer~(FTL).
+To facilitate this, 
+To bridge the gap and to faciliate the managing of flash storage, something is needed to assist SSDs in writing for sector-based programs, which is known as the flash translation layer~(FTL).
 
 % Mapping
 FTL performs two important functions within the SSD: logical block mapping and garbage collection~(GC).
 FTL is responsible for converting logical block addresses to physical address values to store logical sectors in physical pages, which is referred to as logical block mapping.
-Block mapping is stored in the SSD's memory for quick access and consists of a table containing logical block addresses~(LBA) and physical block addresses~(PBA).
+The mapping is stored in the SSD's flash and cached in the memory for quick access and consists of a table containing logical block addresses~(LBA) and physical block addresses~(PBA).
 Additionally, SSDs cannot perform in-place updates.
 Therefore, when new data arrives, existing data must be deleted before the new data can be stored.
 At this time, the SSD uses GC to preemptively free up space for deleted data, which also contributes to the durability of the SSD.
@@ -129,5 +130,5 @@ At this time, the SSD uses GC to preemptively free up space for deleted data, wh
 However, accessing the FTL of SSDs from the outside of device is usually infeasible.
 SSD manufacturers make propritery designs due to reasons such as security and complexity.
 Such a hidden internal of FTL results in another issues.
-There have been studies to expose the internals of SSDs to the host~\cite{ocssd,zns:atc21,fdp}.
+There have been studies to expose the internals of SSDs to the host~\cite{ocssd:fast17,zns:atc21,fdp}.
 However, the details of FTL implementations and configurations are not usually publicly available.
