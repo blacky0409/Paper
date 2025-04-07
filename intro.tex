@@ -1,4 +1,4 @@
-\section{Introduction} %{{{
+\section{Introduction}
 \label{s:intro}
 
 % raise issue => 다양한 스토리지가 나옴 => 여전히 fragmentation은 문제가 됨 => 실험이 힘들다..
@@ -36,12 +36,15 @@ As older types of storage devices have been developed, they have prompted numero
 As the performance of storage devices improves, fragmentation, which previously was not a major issue, is now affecting the performance of these devices.
 While new products may demonstrate theoretical performance, actual use tends to degrade performance over time due to fragmentation issues.
 For this reason, regardless of the type of storage device used, it is imperative to age the storage device first when conducting new research.
-\begin{figure}[h]
+
+
+\begin{figure}[t]
     \centering
     \includegraphics[width=0.95\columnwidth]{graphs/aging_duration}
     \caption{Duration to Aging}
     \label{fig:aging-duration}
 \end{figure}
+
 Several tools are available for aging storage devices~\cite{tbbt:fast05, impressions:fast09, conway:login17}.
 However, collecting live system data during the aging process is time-consuming, and since the traces are quite large, the duration required for aging is significantly extended \cite{fs-aging:sigmetrics97}.
 Figure~\ref{fig:aging-duration} shows the time it takes for storage devices to age. 
