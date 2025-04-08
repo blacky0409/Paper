@@ -165,24 +165,24 @@ To address the problems caused by fragmentation, there have been investigated tw
 
 
 % FragPicker
-One of the recent key studies in this context is FragPicker~\cite{fragpicker:sosp21}, which revisits fragmentation issues in the context of modern storage systems.
-The authors demonstrate that fragmentation can indeed lead to performance degradation even on SSDs.
-To address this, FragPicker propses a mechanism that monitors VFS-level read and write operations using eBPF to identify hot files.
-It than actively manages the logical fragmentation of these hot files to improve access locality and overall performance.
+FragPicker~\cite{fragpicker:sosp21} is a recent study that revisits fragmentation issues in the context of modern storage systems.
+The authors demonstrate that fragmentation can indeed lead to performance degradation, even on SSDs.
+To address this, FragPicker propses an efficient mechanism to identify hot files by monitoring read and write operations at VFS-level through eBPF.
+It than actively deals with the logical fragmentation of these hot files.
 
 % F2FS mobile
-\cite{f2fs-mobile:nvmsa24} investigates how filesystems employing out-of-place update schemes are prone to fragmentation, as update operations can lead to file fragmentation.
+Wang et al.~\cite{f2fs-mobile:nvmsa24} investigates how filesystems that employ out-of-place update schemes are prone to fragmentation.
+Specifically, in log-structured filesystems, update operations relocate data and it can lead to data fragmentation.
 The study Specifically examines F2FS fragmentation on Android mobile devices.
-Additionally, it explores leveraging File-based optimization (FBO) in UFS 4.0~\cite{ufs4.0} to address fragmentation-related performance issues.
-\SK{여기에 f2fs-mobile 내용 추가하세요}
+Additionally, the authors propose a scheme to leverage the file-based optimization (FBO) in UFS 4.0~\cite{ufs4.0} to mitigate data fragmetation.
 
 
+% Fragmentation takes efforts
 However, aging filesystems and storage devices is a time-consuming process, often taking days or even longer.
 For instance, \cite{fs-aging:sigmetrics97} reports the results of a 3-year study.
 Such long-time studies are usually not feasible in many scenarios.
-
 % Preliminary
-Accordingly, there has been work focused on controlling the preconditioning of filesystems and storage devices.
+Accordingly, there has been work attempted to control the preconditioning of filesystems and storage devices.
 Earlier studies primarily focused on data fragmentation, where data is scattered across the device.
 These studies, however, often neglect the impact of free space fragmentation and its broader implications on filesystem behavior and device aging.
 
