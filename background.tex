@@ -88,6 +88,17 @@ Consequently, even if the host issues a single request for a logically contiguou
 This is becoming more pronounced in recent devices, where interfacing overhead becomes a non-negligible portion of overall performance~\cite{Problem_in_SSD_Empirical,senescence:fast17,Problem_in_SSD_Mobile_Devices,survey:ictc23,no-afraid:fast24,defrag-mobile:atc17,fragpicker:sosp21}
 
 
+% Fragmentation matters
+In the era of HDDs, fragmentation was a primary source of performance degradation.
+The mechanical nature of hard drives means that fragmented files incur significant overhead due to seek time---the delay for moving the disk head to the target track---and rotational delay---the time required for the target sector to rotate under the head.
+In contrast, flash memory-based SSDs have no moving parts, eliminating both seek time and rotational delay.
+As a result, early research generally assumed that filesystem fragmentation had little to no impact on SSDs.
+Moreover, defragmentation was often considered harmful in SSDs, as it generates additional data writes that reduce the lifespan of flash memory~\cite{defrag-mobile:atc17,defrag-lfs:apsys16,parallel-defrag:sac22,Defragmentation_read_collision}.
+However, more recent studies have discovered that filesystem aging and the accompanying fragmentation can also degrade SSD performance due to both logical and physical fragmentation~\cite{Problem_in_SSD_Empirical,senescence:fast17,Problem_in_SSD_Mobile_Devices,survey:ictc23,fragpicker:sosp21,no-afraid:fast24}.
+For instance, in modern SSDs with complex NAND flash architectures, data may be distributed unevenly across multiple channels and dies.
+This imbalance can lead to skewed workloads and reduced I/O parallelism, resulting in suboptimal performance.
+
+
 
 %-------------------------------------------------------------------------
 \subsection{Flash Translation Layer}\label{ss:ftl}
@@ -114,16 +125,17 @@ However, accessing the SSD's FTL from the outside is not feasible due to reasons
 Traditional storage devices, such as hard disk drives (HDDs), interface with the host system through a block-based interface.
 This block-based interface abstracts the storage device as a linear array of fixed-size logical sectors.
 In contrast, flash memory, which is the medium for solid-state drives (SSDs), is organized into pages and erase blocks.
-Data is accessed at the granularity of pages, however, flash memory imposes a significant constraint.
-Once data is written to a page, it cannot be overwritten immediately.
+Data is accessed at the granularity of pages.
+However, flash memory imposes a significant constraint.
+Once data is written to a page, it cannot be overwritten subsequently.
 Instead, the page must be erased before new data can be written.
 Moreover, this erase operation can only be performed at the erase block level, which consists of multiple pages.
-This erase-before-write constraint, coupled with the mismatch in access units between flash memory and traditional block-based interface, necessitates a translation mechanism.
-To this end, SSDs incorporate a firmware layer known as the flash translation layer~(FTL).
+This erase-before-write constraint, coupled with the mismatch in access units between flash memory and traditional block-based interface, necessitates a translation mechanism in SSDs.
+To this end, modern flash-based storage devices, include SSDs, incorporate a firmware layer known as the flash translation layer~(FTL).
 
 
 % Mapping
-The FTL performs two essential functions within an SSD: address mapping and garbage collection~(GC).
+The FTL performs two essential functions within an SSD: (1) address mapping and (2) garbage collection~(GC).
 The FTL is responsible for translating sector-based logical addresses issued by the host into physical addresses consisting of flash blocks and pages.
 To perform the translation, FTL typically maintains a mapping table that is persisted in the flash storage and often cached in volatile memory for fast accesses.
 
@@ -142,3 +154,41 @@ As a result, accessing or modifying the FTL from the outside of device is typica
 This lack of transparency poses challenges for researchers and system developers who seek to understand, optimize, or customize storage behavior.
 To address this, several efforts have attempted to expose internal SSD management mechanisms to the host, such as Open-Channel SSDs~\cite{ocssd:fast17}, Zoned Namespace SSDs~\cite{zns:atc21}, and Flexible Data Placement~\cite{fdp}.
 Despite these initiatives, the concrete details of FTL implementations and configurations remain largely undisclosed in commercial devices.
+
+
+%-------------------------------------------------------------------------
+\subsection{Related Work}\label{ss:related}
+
+% Fragmentation overview
+Many studies have been carried out to investigate the characteristics of fragmentation and its implications for performance~\cite{senescence:fast17,Problem_in_SSD_Empirical,Problem_in_SSD_Mobile_Devices,fsaging:hotstorage19}.
+To address the problems caused by fragmentation, there have been investigated two approaches: (1) proactively prevent fragmentation from occurring~\cite{no-afraid:fast24,Defragmentation_read_collision} and (2) defragement already-fragmented data or free space in efficient ways~\cite{defrag-lfs:apsys16,janusd:atc17,fragpicker:sosp21,parallel-defrag:sac22}.
+
+
+% FragPicker
+One of the recent key studies in this context is FragPicker~\cite{fragpicker:sosp21}, which revisits fragmentation issues in the context of modern storage systems.
+The authors demonstrate that fragmentation can indeed lead to performance degradation even on SSDs.
+To address this, FragPicker propses a mechanism that monitors VFS-level read and write operations using eBPF to identify hot files.
+It than actively manages the logical fragmentation of these hot files to improve access locality and overall performance.
+
+% F2FS mobile
+\cite{f2fs-mobile:nvmsa24} investigates how filesystems employing out-of-place update schemes are prone to fragmentation, as update operations can lead to file fragmentation.
+The study Specifically examines F2FS fragmentation on Android mobile devices.
+Additionally, it explores leveraging File-based optimization (FBO) in UFS 4.0~\cite{ufs4.0} to address fragmentation-related performance issues.
+\SK{여기에 f2fs-mobile 내용 추가하세요}
+
+
+However, aging filesystems and storage devices is a time-consuming process, often taking days or even longer.
+For instance, \cite{fs-aging:sigmetrics97} reports the results of a 3-year study.
+Such long-time studies are usually not feasible in many scenarios.
+
+% Preliminary
+Accordingly, there has been work focused on controlling the preconditioning of filesystems and storage devices.
+Earlier studies primarily focused on data fragmentation, where data is scattered across the device.
+These studies, however, often neglect the impact of free space fragmentation and its broader implications on filesystem behavior and device aging.
+
+% Geriatrix
+Geriatrix~\cite{geriatrix:atc18} is an SSD aging tool that improves upon previous approaches.
+It provides a more comprehensive and representative environment for evaluating SSD performance under aged conditions.
+Geriatrix addresses earlier limitations by employing a set of built-in aging profiles, which control various parameters such as file size distributions and directory tree depths.
+These parameters influence the layout of the filesystem.
+The profiles guide the creation and deletion of files in patterns that mimic realistic workloads, thereby effectively reproducing fragmentation characteristics that naturally develop over prolonged usage.
