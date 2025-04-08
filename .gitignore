@@ -10,6 +10,7 @@
 *.fls
 *-eps-converted-to.pdf
 *.synctex*
+aspell.words
 p.pdf
 sample-boxes.pdf
 sample-lines.pdf
