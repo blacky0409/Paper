@@ -96,7 +96,6 @@ In a real-world system, aging may take even weeks to several months, which is cr
 Therefore, many studies conduct evaluation on new system conditions, failing to properly incorporate the effects of fragmentation.
 This is not ideal for accurate and fair research evaluation.
 
-
 % 2. Physical fragmentation
 Second, prior preconditioning techniques are unable to control the physical fragmentation.
 In HDDs, the closely aligned layouts between logical and physical address spaces implies small undiscovered physical fragmentation.
@@ -107,20 +106,22 @@ As an alternative, physical fragmentation is indirectly induced by blindly runni
 This leaves physical fragmentation relatively underexplored in the existing literature.
 Indeed, to the best of the authors' knowledge, no tool currently exists that can perform aging while controling physical fragmentation.
 
-
 % 3. Adaptibility to new type of storage devices
-Last, despite the emergence of various new types of storage devices developed in response to the increasing demand for high-performance and efficient storage solutions, the issue of fragmentation continues to persist in storage devices.
-This problem of fragmentation can lead to degraded performance and aging of the storage devices.
-For instance, key-value SSD should be aged with key-value operations, whereas FDP or zoned namespace SSDs requires different aging operations.
-However, most of tools just operate on conventional filesystem setup, which is inappropriate in complicated storage system landscape.
+Last, the emergence of various new storage device types has diversified the procedures required for aging storage systems.
+Recently, many novel types device types have been introduced in response to the growing demand for high-performance and efficient data storage~\cite{NEEDED,NEEDED,NEEDED}.
+While fragmentation continues to contribute to system aging system and degrade performance, the incresing diversity in device interface and type-specific characteristics renders traditional filesystem-level aging techniques insufficient or even inapplicable.
+
+For instance, some devices, such as key-value SSDs and in-storage processing SSDs, communicate with the host using non-traditional interface that do not follow the standard LBA scheme.
+Others, like zoned namespace SSDs and flexible data placement SSDs, require the host to issue requests under strict operation constraints.
+Despite this evolving landscape, most existing aging tools are designed to operate on conventional filesystem setups only, making them ill-suited for these more complex storage environments.
 
 
 % What we need: fast direct approach
-These motivated us to the idea of reducing the time required for aging by directly aging the SSD, retrieving data from the FTL, and storing it in files.
-These files can then be loaded into the FTL of a new SSD to quickly configure an aged SSD.
-To achieve this, we attempted to store the FTL information and storage space data of a virtual SSD on a storage emulator called NVMeVirt, allowing for loading into a new SSD.
-This approach will significantly reduce the time spent on aging tasks conducted to align with the actual user environment before research, making it an essential tool for researchers.
-
+These observation motivated us to explore a new approach to reducing the time required for aging SSDs.
+The key idea is to extract both user data and FTL metadata from an aged SSD and then reload this snapshot into the FTL of a new SSD instance.
+This process effectively replicates the entire aged state without the need for time-consuming, effort-intensive workload-based aging processes.
+To realize this concept, we leverage a storage emulator called NVMeVirt.
+In doing so, we can drastically reduce the time required to prepare SSDs that reflect real-world usage conditions, making this approach a valuable tool for researchers conducting performance evaluations under realistic fragmented and aged storage conditions.
 
 
 %-------------------------------------------------------------------------
