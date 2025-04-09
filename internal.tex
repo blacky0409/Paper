@@ -68,40 +68,47 @@ We argue that this approach will significantly reduce the time spent on aging ta
 %    - Due to the hw-built nature of storage...
 %
 
-Despite these efforts, fragmentation continues to pose problems, particularily as devices age and workloads vary.
+% Fragmentation is still problematic and is getting more complicated ever
+As discussed in the previous section, fragmentation continues to pose challenges even in modern storage systems.
+In the past, its implications were relatively straightforward in the context of HDDs.
+However, with the increasing complexity of host-side I/O stack and device architecture internals, the effects of fragmentation have become more nuanced.
+In particular, logical and physical fragmentation can now occur independently, and each type requires different strategies for mitigation.
+
+% Logical fragmentation: faster storage performance
+Moern operating systems feature highly optimized I/O stacks designed to fully utilize high-performance storage devices.
+Fragmentation disrupts data contiguity, causing a single logical I/O request to be split into multiple smaller I/O requests~\cite{IO}.
+This increases the total number of I/O requests.
+All sub-requests generated for one I/O request must complete before the request is considered finished.
+Therefore, this division of I/O request introduces latency and synchronization bottlenecks.
+Moreover, for each fragmented I/O, the operating system must allocate and manage multiple data structures, such as bio structures, request queues, and I/O commands.
+These additional operations incur overhead, undermining the efficiency of the I/O stack and degrading overall performance.
+
+
+% Physical fragmentation: complex internal for parallelism
+Secondly, SSDs enhance read performance through prefetching, which loads subsequent data in advance based on LBA.
+Fragmentation can cause this prefetching to load unnecessary data.\cite{defrag-lfs:apsys16} For these reasons, filesystem fragmentation is also a concern in SSDs.
+and the internal architectures of modern storage devices getting sophisticated.
+
+
+% For a real-world performance evaluation, researchers should consider the fragmented storage.
 As a result, researchers often artificially age SSDs to emulate an environment similar to that of SSDs used in real-world usage conditions before conducting their studies.
+When new research is conducted, new SSDs are expected to have the best performance with no fragmentation whatsoever.
+However, SSDs used in real life often experience performance degradation due to prolonged use and significant fragmentation.
+
+% However, this is getting complicated
+% 1. FTL
+% 2.
+% 3. Various device types
 Numerous studies have been conducted for this purpose, and several tools have been developed to facilitate controlled SSD aging for research purposes.
-
-
-Such aging tools have created an environment where researchers can easily replicate SSDs in real-life scenarios.
-However, these aging processes can take anywhere from a few weeks to several months, and this wasted time is critical for research.
 
 Despite the emergence of various new types of storage devices developed in response to the increasing demand for high-performance and efficient storage solutions, the issue of fragmentation continues to persist in storage devices.
 This problem of fragmentation can lead to degraded performance and aging of the storage devices.
 
+% This aging takes times
+Such aging tools have created an environment where researchers can easily replicate SSDs in real-life scenarios.
 
-Logical and physical fragmentation can occur independently, and appropriate measures are needed to address each issue.
-% SSD: logical + physical
-In flash memory, there is no seek time or rotational latency, so early researchers generally argued that SSD performance is not affected by filesystem fragmentation.
-Therefore, techniques like defragmentation were thought to have only negative impacts by reducing the lifespan of flash memory due to additional write operations~\cite{defrag-mobile:atc17,fragpicker:sosp21,defrag-lfs:apsys16,no-afraid:fast24,parallel-defrag:sac22,Defragmentation_read_collision}.
-However, more recent studies have shown that filesystem aging and resultant fragmentation can also lead to performance degradation in SSDs~\cite{Problem_in_SSD_Empirical,senescence:fast17,Problem_in_SSD_Mobile_Devices,survey:ictc23}.
-For example, in the storage devices built with NAND flash memory, data can be distributed across multiple channels, which directly impacts I/O parallelism.
-built with high-density high-performance media with complicated architecture.
+However, these aging processes can take anywhere from a few weeks to several months, and this wasted time is critical for research.
 
-
-
-When new research is conducted, new SSDs are expected to have the best performance with no fragmentation whatsoever.
-However, SSDs used in real life often experience performance degradation due to prolonged use and significant fragmentation.
-
-The first reason for this is request fragmentation due to logical fragmentation.
-In the Linux I/O stack, a single I/O request can only represent contiguous LBA.
-Fragmentation influences the non-contiguous storage of data, causing a single I/O request to be divided into multiple smaller I/O requests.\cite{IO}
-This increases the total number of I/O requests, and all requests derived from a single I/O must be completed before the next process can proceed, leading to issues in I/O performance.
-If multiple I/O requests are necessary for one file, the system must generate bio structures, request structures, and I/O commands corresponding to the number of requests.
-This process incurs overhead in I/O request management.
-
-Secondly, SSDs enhance read performance through prefetching, which loads subsequent data in advance based on LBA.
-Fragmentation can cause this prefetching to load unnecessary data.\cite{defrag-lfs:apsys16} For these reasons, filesystem fragmentation is also a concern in SSDs.
 
 
 To address this, SSDs are aged to induce the desired level of fragmentation, allowing for a more accurate representation of the conditions in which SSDs are used.
@@ -116,6 +123,7 @@ This motivation led to the idea of reducing the time required for aging by direc
 These files can then be loaded into the FTL of a new SSD to quickly configure an aged SSD.
 To achieve this, we attempted to store the FTL information and storage space data of a virtual SSD on a storage emulator called NVMeVirt, allowing for loading into a new SSD.
 We argue that this approach will significantly reduce the time spent on aging tasks conducted to align with the actual user environment before research, making it an essential tool for researchers.
+
 
 
 %-------------------------------------------------------------------------
