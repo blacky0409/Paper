@@ -51,34 +51,30 @@ Through our research, we aim to facilitate the rapid creation of aged SSDs for f
 % NVMeVirt는 소프트웨어로 정의된 NVMe 장치로, 리눅스 커널 모듈로 구현되어 있으며, 기존 NVMe 인터페이스를 사용하여 다양한 저장 장치를 모방하는 기능을 제공합니다.
 % 주 목적은 고급 저장 장치를 개발하고 연구할 수 있는 환경을 제공하는 것으로, 실제 저장 장치와 유사한 방식으로 동작하게 됩니다.
 
+As our idea is implemented using NVMeVirt~\cite{nvmevirt,empowering:tos23}, we first provide a brief overview of NVMeVirt.
+NVMeVirt is a storage device emulator capable of presenting various NVMe device types.
+Unlike other emulators, NVMeVirt emulates devices by processing NVMe commands at the PCIe level, thereby offering a flexible and realistic environment for evaluating diverse storage devices.
+Currently NVMeVirt supprots conventional SSDs, NVM SSDs, key-value SSDs, zoned namespace (ZNS) SSDs, and flexible data placement (FDP) SSDs.
 
-NVMeVirt is a modern storage device emulator~\cite{nvmevirt} that emulates virtual NVMe devices by processing NVMe commands at the PCIe level.
-Implemented as a Linux kernel module, NVMeVirt enables software-defined virtual NVMe devices, allowing researchers to configure a wide range of device types and behaviors.
-Its primary objective is to provide a flexible and realistic environment for developing and evaluating advanced storage devices, closely mimicking the operation of physical hardware.
 
 % development => How Work?
-\begin{figure}[t]
-    \centering
-    \includegraphics[width=0.95\columnwidth]{ssd}
-    \caption{NVMeVirt SSD structure}
-    \label{fig:structure}
-\end{figure}
-
 % NVMeVirt는 다양한 구성 요소로 이루어진 소프트웨어 정의 NVMe 장치로, 내부 구조는 FTL(Flash Translation Layer) 인스턴스, 채널, 다이(die), 블록, 페이지를 포함하여 데이터 처리를 수행합니다.
 % PCIe 링크를 통해 직렬화된 데이터 전송에도 불구하고, FTL은 여러 NAND 채널과 다이를 통해 데이터 I/O 요청을 병렬로 처리합니다.
 % 이러한 아키텍처에서 FTL은 다이와 채널을 조정하여 효율적인 데이터 처리를 진행하며, 각 다이는 독립적으로 작동하여 성능을 극대화합니다.
 
-NVMeVirt is composed of various components, as shown in Figure~\ref{fig:structure}, with its internal structure performing data processing through instances of the Flash Translation Layer (FTL), channels, dies, blocks, and pages.
-Despite serialized data transmission over the PCIe link, the FTL processes data I/O requests in parallel through multiple NAND channels and dies.
-In this architecture, FTL coordinates the dies and channels to enable efficient data processing, with each die operating independently to maximize performance.
-
-
 \begin{figure}[t]
     \centering
-    \includegraphics[width=0.95\columnwidth]{nvmev-making}
-    \caption{Make the NVMeVirt instance}
-    \label{fig:making}
+    \includegraphics[width=0.95\columnwidth]{ssd}
+    \caption{The internal architecture of NVMeVirt}
+    \label{fig:structure}
 \end{figure}
+
+NVMeVirt is implemented as a Linux kernel module and consists of of several components.
+The internal architecture is illustrated in Figure~\ref{fig:structure}.
+To reflect the inherent parallelism of modern SSDs, NVMeVirt is comprised of multiple FTL instances and each instance emulates the full hierarchy of core storage hardware components such as PCIe links, channels, dies, blocks, and pages.
+NVMeVirt enables realistic data processing by coordinating the channels and dies.
+Thus, although data transmission is serialized over the PCIe link, the FTL handles data I/O requests in parallel across multiple NAND channels and dies.
+
 
 % 시스템 초기화 시 물리적 주소 공간의 일부를 예약하여 필요한 메모리를 확보하고, 이 예약된 메모리는 I/O 작업자, NVMeV 코어 디스패처 및 SSD 코어 등 NVMeVirt의 주요 구성 요소에 데이터를 저장하고 관리하는 데 사용됩니다.
 % 사용자는 구성 파일을 통해 SSD의 종류를 지정하고 메모리의 시작과 끝 주소를 설정할 수 있어, 다채로운 구성 옵션을 선택택할 수 있습니다.
@@ -87,15 +83,26 @@ In this architecture, FTL coordinates the dies and channels to enable efficient 
 % 이러한 에뮬레이션 방식은 저장 장치 연구와 엔지니어링을 위한 다재다능함을 보여줍니다.
 % 더불어 NVMeVirt는 다양한 저장 장치 유형인 일반 SSD, NVM SSD, ZNS SSD, 키-값 SSD를 지원하며, 다양한 저장 장치 인스턴스를 생성하여 연구자들이 여러 SSD 아키텍처를 실험하고 분석할 수 있는 기회를 제공합니다.
 
-Figure~\ref{fig:making} illustrates the processing creating a virtual NVMe instance.
-During system initialization, a portion of the physical address space is reserved to secure the necessary memory, which is utilized to store and manage data for the key components of NVMeVirt, such as the I/O worker, NVMeV core dispatcher, and SSD core.
-Users can specify the type of SSD and set the starting and ending addresses of the memory through a configuration file, allowing for a variety of configuration options.
+\begin{figure}[t]
+    \centering
+    \includegraphics[width=0.95\columnwidth]{nvmev-making}
+    \caption{Make the NVMeVirt instance}
+    \label{fig:making}
+\end{figure}
 
-Internally, the dispatcher and I/O worker interact and process data like a native NVMe device.
-This emulation approach demonstrates versatility for storage device research and engineering.
-Additionally, NVMeVirt supports various types of storage devices, including standard SSDs, NVM SSDs, ZNS SSDs, and key-value SSDs, providing researchers with opportunities to create multiple SSD instances for experimentation and analysis of different SSD architectures.
+Figure~\ref{fig:making} illustrates the process for instantizing a virtual NVMe device.
+During system initialization, a portion of the physical memory range is reserved and used to store both user data and management metadata.
+Users can specify the type of device to emulate along with the memory range (start and end addresses) via a configuration file.
+Internally, the dispatcher and I/O worker interact to process data like a native NVMe device.
+This infrastructure allows researchers to instantiate multiple device instances, facilitating experimentation with analysis of diverse SSD architectures.
 
+% Space
+Most of the reserved memory is used for storing user data.
+The physical memory range corresponds to the logical block address (LBA) space.
+On top of the LBA address space, each storage type FTL emulates the location of LBA in physical address space.
+While locating the position, FTL computes the time to complete the request.
 
+\begin{comment}
 % trun => Others
 
 % SSD를 시뮬레이션하거나 에뮬레이션하기 위한 여러 도구는 이미 존재합니다.
@@ -129,6 +136,8 @@ Conversely, NVMeVirt provides developers with the flexibility to easily modify t
 Additionally, by not relying on virtualization technology, it can implement a comprehensive communication model with low overhead, and the modular design facilitates easy module loading.
 Thanks to these characteristics, we proceeded with our research based on NVMeVirt.
 Furthermore, leveraging NVMeVirt offers the additional advantage of direct access to the FTL.
+\end{comment}
+
 
 %-------------------------------------------------------------------------
 \subsection{Implementation}
@@ -142,11 +151,11 @@ Furthermore, leveraging NVMeVirt offers the additional advantage of direct acces
     \label{fig:mappingtable}
 \end{figure*}
 
-There are four main types of data that need to be retrieved from the aged SSD on NVMeVirt.
+In NVMeVirt, there are four main types of data that need to be retrieved to make a snapshot from an aged SSD.
 % 1. FTL
-First, the metadata of the SSD related to the FTL must be obtained.
+First, the \emph{metadata of the SSD related to the FTL} must be obtained.
 Unlike actual SSDs, the FTL in NVMeVirt primarily performs the task of calculating request times.
-When storing data in actual storage, it uses Logical Block Addresses (LBA) instead of Physical Page Addresses (PPA), eliminating the need to convert LBA to PPA for disk I/O assistance.
+When storing data in actual storage, it uses logical block addresses (LBAs) instead of physical page addresses (PPAs), eliminating the need to convert LBA to PPA for disk I/O assistance.
 Instead, as shown in Figure \ref{fig:mappingtable}, the LBA is abstractly related to the PPA, and the expected request time is calculated so that the time taken to store or read data matches the computed request time.
 This allows for abstract handling of each PPA.
 Therefore, it is necessary to store the mapping table, reverse mapping table, and various parameters used to calculate request times.
@@ -160,7 +169,7 @@ Therefore, it is necessary to store the mapping table, reverse mapping table, an
 \end{figure}
 
 % 2. Block metadata
-Second, we need to bring the Free Block list, Full Block list, and Victim Block queue that manage the Free and Full blocks.
+Second, we need to bring the \emph{Free Block list, Full Block list, and Victim Block queue} that manage the Free and Full blocks.
 The state of an SSD's blocks is divided into two categories: Full Blocks, which are completely written, and Free Blocks, which are empty.
 The FTL manages these blocks in list form.
 As shown in Figure \ref{fig:role}, when the LBA is converted to PPA within the FTL and the request time is calculated, the write pointer is placed in either the Victim Block queue or the Full Block List.
@@ -170,8 +179,9 @@ The FTL manages Free Blocks through the Free Block List, allocating blocks from 
 In other words, the state of the SSD blocks is managed through the Free Block List, Full Block List, and Victim Block queue, which determines where to write data.
 Therefore, it is essential to preserve this data regarding block states.
 
+
 % 3. SSD Metadata
-Third, metadata about the SSD itself, beyond the FTL, must be retrieved.
+Third, \emph{metadata about the SSD itself}, beyond the FTL, must be retrieved.
 Since NVMeVirt is an emulator for SSDs, it manages metadata for channels, blocks, and pages.
 Most of this data can be recreated in a new SSD without issues.
 However, metadata for blocks and especially pages must be retained.
@@ -181,8 +191,9 @@ For blocks, the metadata includes the count of valid pages, the count of invalid
 This information also needs to be maintained, as it will be reset in the new SSD.
 Failing to retain the metadata for pages and blocks could lead to conflicts with the FTL's metadata, resulting in issues.
 
+
 % 4. Contents
-Lastly, the contents of the storage must be retrieved.
+Lastly, the \emph{contents of the storage} must be retrieved.
 The storage in NVMeVirt exists linearly in memory.
 To obtain the contents of the storage, it is necessary to copy from the starting address of the storage for the entire size of the storage.
 
