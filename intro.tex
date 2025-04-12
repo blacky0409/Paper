@@ -46,13 +46,15 @@ For this reason, regardless of the type of storage device used, it is imperative
 
 Several tools are available for aging storage devices~\cite{tbbt:fast05, impressions:fast09, conway:login17}.
 However, collecting live system data during the aging process is time-consuming, and since the traces are quite large, the duration required for aging is significantly extended \cite{fs-aging:sigmetrics97}.
-Figure~\ref{fig:aging-duration} shows the time it takes for storage devices to age. 
-Each round takes about 10 minutes, and experiments were conducted using SQLite and the ext4 file system with storage capacities of 16G, 32G, and 128G.
-The method for aging is as follows: in each round, small and large files of random sizes are generated randomly. 
-All small files are then deleted. If the utilization of the storage remains above a predefined threshold after deleting the small files, it is considered aged~\cite{Problem_in_SSD_Empirical}.
-The 64G storage took 2.7 times longer than the 16G storage to age, and the 128G storage took 1.6 times longer than the 64G storage. 
-This experiment was conducted in a scenario involving small storage devices, but the smallest 16G storage took 1870 minutes to reach aging. 
-This is a considerable amount of time, and in real applications where TB-sized storage devices are used, it would be a tedious wait to reach aging.
+
+Figure~\ref{fig:aging-duration} shows the time it takes for the storage device to age. 
+The experiments were conducted using SQLite and the ext4 file system, with storage capacities set to 16GB, 64GB, and 128GB. 
+The aging method is as follows: in each round, large files of over 100MB and small files of under 100KB are alternately generated. 
+If the file system becomes full, some of the existing small files are deleted to maintain the file system usage below 95＼‰. 
+If, after deleting the small files, the file system usage does not drop below 95＼‰, that point is considered the completion of aging~\cite{Problem_in_SSD_Empirical}。
+As shown in Figure~\ref{fig:aging-duration}, it can be observed that as the size of the storage increases, the time required for aging also increases. 
+Furthermore, although this experiment was conducted using small storage devices, the smallest 16GB storage device took 1870 minutes to age. 
+This is a considerable amount of time, and in real applications where TB-sized storage devices are used, waiting to reach the aging point would be even more tedious.
 
 Given the performance and density improvements of storage devices, the use of TB-sized storage devices in practical applications will demand even more time for aging for research purposes.
 
