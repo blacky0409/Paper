@@ -54,7 +54,7 @@ Through our research, we aim to facilitate the rapid creation of aged SSDs for f
 As our idea is implemented using NVMeVirt~\cite{nvmevirt,empowering:tos23}, we first provide a brief overview of NVMeVirt.
 NVMeVirt is a storage device emulator capable of presenting various NVMe device types.
 Unlike other emulators, NVMeVirt emulates devices by processing NVMe commands at the PCIe level, thereby offering a flexible and realistic environment for evaluating diverse storage devices.
-Currently NVMeVirt supprots conventional SSDs, NVM SSDs, key-value SSDs, zoned namespace (ZNS) SSDs, and flexible data placement (FDP) SSDs.
+Currently, NVMeVirt supprots conventional SSDs, NVM SSDs, key-value SSDs, zoned namespace (ZNS) SSDs, and flexible data placement (FDP) SSDs.
 
 
 % development => How Work?
@@ -71,9 +71,10 @@ Currently NVMeVirt supprots conventional SSDs, NVM SSDs, key-value SSDs, zoned n
 
 NVMeVirt is implemented as a Linux kernel module and consists of of several components.
 The internal architecture is illustrated in Figure~\ref{fig:structure}.
-To reflect the inherent parallelism of modern SSDs, NVMeVirt is comprised of multiple FTL instances and each instance emulates the full hierarchy of core storage hardware components such as PCIe links, channels, dies, blocks, and pages.
-NVMeVirt enables realistic data processing by coordinating the channels and dies.
-Thus, although data transmission is serialized over the PCIe link, the FTL handles data I/O requests in parallel across multiple NAND channels and dies.
+To accurately reflect the inherent parallelism of modern SSDs, NVMeVirt is comprised of multiple FTL instances, each emulating the full hierarchy of core storage hardware components such as PCIe links, channels, dies, blocks, and pages.
+NVMeVirt models realistic data processing by coordinating the abstraction of channels and dies.
+Inbound data transferred over the PCIe link is first buffered in a write buffer, then dispatched to the appropriate FTL instance.
+Each FTL instance handles I/O requests in parallel across multiple NAND channels and dies.
 
 
 % 시스템 초기화 시 물리적 주소 공간의 일부를 예약하여 필요한 메모리를 확보하고, 이 예약된 메모리는 I/O 작업자, NVMeV 코어 디스패처 및 SSD 코어 등 NVMeVirt의 주요 구성 요소에 데이터를 저장하고 관리하는 데 사용됩니다.
@@ -86,21 +87,30 @@ Thus, although data transmission is serialized over the PCIe link, the FTL handl
 \begin{figure}[t]
     \centering
     \includegraphics[width=0.95\columnwidth]{nvmev-making}
-    \caption{Make the NVMeVirt instance}
+	\caption{Make the NVMeVirt instance\SK{그림이 뭘 이야기 하려는지 명확하지 않아요...}}
     \label{fig:making}
 \end{figure}
 
-Figure~\ref{fig:making} illustrates the process for instantizing a virtual NVMe device.
-During system initialization, a portion of the physical memory range is reserved and used to store both user data and management metadata.
-Users can specify the type of device to emulate along with the memory range (start and end addresses) via a configuration file.
-Internally, the dispatcher and I/O worker interact to process data like a native NVMe device.
-This infrastructure allows researchers to instantiate multiple device instances, facilitating experimentation with analysis of diverse SSD architectures.
+% Initialization
+Figure~\ref{fig:making} illustrates the process by which NVMeVirt instantiates virtual devices.
+During system initialization, a portion of physical memory range is reserved.
+The reserved memory can later be assigned to virtual devices during instantiation.
+Users can create a device instance by specifying the device type and the memory range to assign via the sysfs interface.
+The information is passed to the NVMeVirt module, which triggers a PCIe bus scan with an appropriate PCIe configuration header.
+This process effectively create an instance of NVMe device of the specified type.
+The device instance is visible to the system as if it were an actual device.
+
 
 % Space
-Most of the reserved memory is used for storing user data.
-The physical memory range corresponds to the logical block address (LBA) space.
-On top of the LBA address space, each storage type FTL emulates the location of LBA in physical address space.
-While locating the position, FTL computes the time to complete the request.
+The assigned memory is utilized in a device type-specific manner.
+For many device types, such as conventional SSDs, NVM SSDs, ZNS SSDs, and FDP SSDs, most of the reserved memory is used to store user data.
+Specifically, the physical memory range is directly corresponds to the LBA space of the emulating device.
+On top of the LBA space, each device type-specific FTL emulates the physical data layout, mapping LBNs to physical addresses.
+During this process, the FTL models the device performance by computing the time required to complete each I/O request.
+
+%This infrastructure enables researchers to instantiate multiple device instances, facilitating various evaluation environments.
+%Internally, the dispatcher and I/O worker interact to process data like a native NVMe device.
+
 
 \begin{comment}
 % trun => Others
@@ -151,14 +161,15 @@ Furthermore, leveraging NVMeVirt offers the additional advantage of direct acces
     \label{fig:mappingtable}
 \end{figure*}
 
-In NVMeVirt, there are four main types of data that need to be retrieved to make a snapshot from an aged SSD.
-% 1. FTL
+Our idea is that as NVMeVirt emulates virtual devices in software, we can make a snapshot of storage device by storing information in NVMeVirt.
+To this end, four main types of data should be retrieved to make the snapshot from an aged SSD.
+% 1. Mapping information
 First, the \emph{metadata of the SSD related to the FTL} must be obtained.
 Unlike actual SSDs, the FTL in NVMeVirt primarily performs the task of calculating request times.
 When storing data in actual storage, it uses logical block addresses (LBAs) instead of physical page addresses (PPAs), eliminating the need to convert LBA to PPA for disk I/O assistance.
 Instead, as shown in Figure \ref{fig:mappingtable}, the LBA is abstractly related to the PPA, and the expected request time is calculated so that the time taken to store or read data matches the computed request time.
 This allows for abstract handling of each PPA.
-Therefore, it is necessary to store the mapping table, reverse mapping table, and various parameters used to calculate request times.
+Therefore, it is necessary to store the mapping table, reverse mapping table.
 
 
 \begin{figure}[t]
@@ -190,6 +201,8 @@ When a new SSD is created, all pages are initialized to a valid state, so this i
 For blocks, the metadata includes the count of valid pages, the count of invalid pages, and the erase count.
 This information also needs to be maintained, as it will be reset in the new SSD.
 Failing to retain the metadata for pages and blocks could lead to conflicts with the FTL's metadata, resulting in issues.
+
+, and configuration parameters to calculate request times.
 
 
 % 4. Contents

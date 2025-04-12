@@ -71,15 +71,15 @@ We argue that this approach will significantly reduce the time spent on aging ta
 % Fragmentation is still problematic and is getting more complicated ever
 It is well-known that storage systems used in real-world workloads often experience significant performance degradation due to substantial fragmentation~\cite{NEEDED}.
 In modern storage systems, fragmentation poses even more challenges.
-
-Specifically, in the past, implications of fragmentation were relatively straightforward.
+%
+In the past, implications of fragmentation were relatively straightforward.
 For instance, HDDs are fundamentally composed of mechanical and electromagnetic components.
-Although they rely on the logical block address (LBA) scheme, which hides the actual data placement within the device, the LBA space is tightly coupled with physical components.
+Although they rely on the logical block address (LBA) scheme, which is supposed to hide the actual data placement within the device, the LBA space is tightly coupled with physical components in practice.
 This leads to closely aligned layouts between logical and physical address spaces, making \emph{logical fragmentation} the most obvious but significant factor impacting device performance.
 % Situation in SSDs
 In contrast, SSDs operate entirely on electrical principles.
 Due to the high I/O performance of flash memory, the overhead of I/O interfacing becomes increasingly significant, making the logical fragmentation still impactful.
-Additionally, the highly complex internal architectures of SSDs often result in a logical placement of data in LBA space that bears little to no correlation with its actual physical location within the device.
+Additionally, the highly complicated internal architectures of SSDs often result in a logical placement of data in LBA space that bears little to no correlation with its actual physical location within the device.
 This decoupling introduces a greater risk of \emph{physical fragmentation}, which is becoming an increasing concern in modern storage systems~\cite{NEEDED,NEEDED}.
 
 
@@ -99,7 +99,7 @@ This is not ideal for accurate and fair research evaluation.
 % 2. Physical fragmentation
 Second, prior preconditioning techniques are unable to control the physical fragmentation.
 In HDDs, the closely aligned layouts between logical and physical address spaces implies small undiscovered physical fragmentation.
-However, in SSDs, the complex and parallel architectures decouple the logical and physical address spaces, increasing the likelihood of physical fragmentation.
+However, in SSDs, the complicated and parallel architectures decouple the logical and physical address spaces, increasing the likelihood of physical fragmentation.
 To make matters worse, controlling the placement of data in SSDs is limited, as the internal FTL is neither accessible nor modifiable in practice.
 Therefore, there is no explicit way to induce a desired degree of physical fragmentation with realistic workloads.
 As an alternative, physical fragmentation is indirectly induced by blindly running operations with the hope of fragmenation or by writing data in unrealistic sequences tailored to a specific FTL.
