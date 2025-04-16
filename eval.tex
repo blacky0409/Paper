@@ -31,13 +31,6 @@
 \end{comment}
 
 
-% Evaluation environment
-\SK{0414: 다른 논문들을 보시면 실험을 설명할 때 환경을 설명하고 그러는 부분이 있습니다. 여기에 해당 내용들 작성해 주세요.}
-
-% Host configuration
-
-% Lines of code
-
 
 We evaluated using several workloads to aging the stroage system.
 %  Git workload
@@ -62,6 +55,7 @@ To measure the extent of aging, multiple git pull commands can be executed, and 
 => NVMEVIRT를 사용한 가상환경에서 실험을 진행함.
 => 컴퓨터의 스펙은 동일하게(mir1의 cpu, mem, storage를 설명), nvmevirt는 conv로, storage의 크기만 다르게 해서 실험을 진행함.
 => nvmevirt가 구현된 커널 스펙
+=> Line of code
 \end{comment}
 I need to Write..
 
@@ -74,7 +68,21 @@ Therefore, if the original contents of a 1TB storage are copied, a 1TB snapshot 
 However, not all parts of the storage contain data.
 [] only dumps the portions of the storage where meaningful data is stored.
 
-Figures~\ref{f:save_latency} and Figure~\ref{f:load_latency} consider two scenarios: one where the entire storage is dumped and loaded, and another where only the updated data is dumped and loaded.
+\begin{figure}[t]
+    \centering
+	\includegraphics[width=0.95\columnwidth]{graphs/load_latency}
+	\caption{Load Latency}
+	\label{f:load_latency}
+\end{figure}
+
+\begin{figure}[t]
+    \centering
+	\includegraphics[width=0.95\columnwidth]{graphs/save_latency}
+	\caption{Save Latency}
+	\label{f:save_latency}
+\end{figure}
+
+Figures~\ref{f:save_latency} and \ref{f:load_latency} consider two scenarios: one where the entire storage is dumped and loaded, and another where only the updated data is dumped and loaded.
 The results for each scenario, measured at storage utilization levels of 10\%, 50\%, and over 90\%, are presented in bar graphs for storage sizes of 16GB, 64GB, and 128GB.
 The thick bars represent the average latency, while the thin lines indicate the maximum values.
 A lower position of the lines and bars indicates shorter latency.
@@ -244,16 +252,3 @@ Rather, the ability to work with a smaller snapshot size presents a greater adva
 	\label{f:free_segment_f2fs}
 \end{figure}
 
-\begin{figure}[t]
-    \centering
-	\includegraphics[width=0.95\columnwidth]{graphs/load_latency}
-	\caption{Load Latency}
-	\label{f:load_latency}
-\end{figure}
-
-\begin{figure}[t]
-    \centering
-	\includegraphics[width=0.95\columnwidth]{graphs/save_latency}
-	\caption{Save Latency}
-	\label{f:save_latency}
-\end{figure}
