@@ -10,38 +10,40 @@
 - Score
 
 # Fragmentation on FDP?
-
-}
-
-% Evaluation environment
-\FYI{
-# Host configuration
-
-# Lines of code
-
 }
 
 
 \begin{comment}
 초반 - 실험 환경 설명 Eval Setup
 
-들어가야 하는 내용 : 
+들어가야 하는 내용 :
   1. 실제로 노화가 영향을 주나? => latency과 dynamic score를 비교하며, dynamic score과 반비례하여 latency가 증가한다.
 								 왜 이런 결과가 나오는지? fragmentation 때문인데, 이걸 그림과 대조하며 설명.
-								 근데 어떤 그림을 사용해야 할지 고민됨. 
+								 근데 어떤 그림을 사용해야 할지 고민됨.
 
   2. dump하는데 필요한 저장공간 => 그래서 update된 storage부분만 snapshot뜨기로 함. => 이건 어느정도?
  	 전체 storage를 dump vs update된 storage만 dump 했을 때의 시간 차이
-	 => 큰 차이는 없고 데이터 배치에 따라 결과값이 달라짐. 
+	 => 큰 차이는 없고 데이터 배치에 따라 결과값이 달라짐.
 	 => 굳이 따지면 save는 update된 storage만 dump하는게 조금떠 빠르고 load는 느리게 관측됨
 	 => 왜지..?
 
 
 \end{comment}
+
+
+% Evaluation environment
+\SK{0414: 다른 논문들을 보시면 실험을 설명할 때 환경을 설명하고 그러는 부분이 있습니다. 여기에 해당 내용들 작성해 주세요.}
+
+% Host configuration
+
+% Lines of code
+
+
+We evaluated using several workloads to aging the stroage system.
 %  Git workload
-The Git aging benchmark\cite{conway:login17,senescence:fast17} can measure aging in a real-world environment that people commonly use.
+The Git aging benchmark\cite{conway:login17,senescence:fast17} can incur aging in a real-world environment that people commonly use.
 Git is a distributed version control system that allows synchronization of source code changes.
-It generates workloads by simulating developers working on collaborative projects using Git.
+This benchmark generates workloads by simulating developers working on collaborative projects using Git.
 Experiments are conducted using the git pull command, which creates new source files, deletes old files, or modifies files. During this process, Git maintains its internal data structure, leading to filesystem aging.
 To measure the extent of aging, multiple git pull commands can be executed, and latency can be measured through reads using grep.
 
@@ -67,41 +69,41 @@ I need to Write..
 
 % comparison snapshot latency
 \subsection{Comparison snapshot Latency}
-[] dumps the storage. 
-Therefore, if the original contents of a 1TB storage are copied, a 1TB snapshot is created. 
-However, not all parts of the storage contain data. 
+[] dumps the storage.
+Therefore, if the original contents of a 1TB storage are copied, a 1TB snapshot is created.
+However, not all parts of the storage contain data.
 [] only dumps the portions of the storage where meaningful data is stored.
 
-Figures~\ref{f:save_latency} and Figure~\ref{f:load_latency} consider two scenarios: one where the entire storage is dumped and loaded, and another where only the updated data is dumped and loaded. 
-The results for each scenario, measured at storage utilization levels of 10\%, 50\%, and over 90\%, are presented in bar graphs for storage sizes of 16GB, 64GB, and 128GB. 
-The thick bars represent the average latency, while the thin lines indicate the maximum values. 
+Figures~\ref{f:save_latency} and Figure~\ref{f:load_latency} consider two scenarios: one where the entire storage is dumped and loaded, and another where only the updated data is dumped and loaded.
+The results for each scenario, measured at storage utilization levels of 10\%, 50\%, and over 90\%, are presented in bar graphs for storage sizes of 16GB, 64GB, and 128GB.
+The thick bars represent the average latency, while the thin lines indicate the maximum values.
 A lower position of the lines and bars indicates shorter latency.
 
-When comparing the two scenarios, the case of dumping only the updated data shows slightly lower latency. 
-However, in the loading scenario, higher latency is observed. This phenomenon arises from the loading method. 
-To load the updated data, it must be stored at specified addresses in the storage according to the information in the snapshot data. 
-At this point, the number of load calls can vary depending on the distribution of existing data. 
+When comparing the two scenarios, the case of dumping only the updated data shows slightly lower latency.
+However, in the loading scenario, higher latency is observed. This phenomenon arises from the loading method.
+To load the updated data, it must be stored at specified addresses in the storage according to the information in the snapshot data.
+At this point, the number of load calls can vary depending on the distribution of existing data.
 For this reason, there may even be cases where the loading latency is lower.
 
-In the case of saving, similar to loading, the number of save calls varies according to the distribution of stored data. 
+In the case of saving, similar to loading, the number of save calls varies according to the distribution of stored data.
 However, due to caching, the number of save commands reaching the storage device is lower compared to loading.
 
-As shown in the graphs, these differences are not significant. 
-While dumping the entire storage is more stable in terms of latency, the scenario of dumping only the updated data does not show a large difference in latency. 
+As shown in the graphs, these differences are not significant.
+While dumping the entire storage is more stable in terms of latency, the scenario of dumping only the updated data does not show a large difference in latency.
 Rather, the ability to work with a smaller snapshot size presents a greater advantage.
 
 
 \begin{figure}[t]
     \centering
     \includegraphics[width=0.95\columnwidth]{graphs/py_graph/dynamic}
-    \caption{Dynamic}
+    \caption{}
     \label{f:dynamic}
 \end{figure}
 
 \begin{figure}[t]
     \centering
     \includegraphics[width=0.95\columnwidth]{graphs/py_graph/dynamic-f2fs}
-    \caption{F2FS dynamic score}
+    \caption{}
     \label{f:f2fs_dynamic_score}
 \end{figure}
 
@@ -109,14 +111,14 @@ Rather, the ability to work with a smaller snapshot size presents a greater adva
 \begin{figure}[t]
     \centering
     \includegraphics[width=0.95\columnwidth]{graphs/py_graph/latency}
-    \caption{Latency}
+    \caption{}
     \label{f:latency}
 \end{figure}
 
 \begin{figure}[t]
     \centering
     \includegraphics[width=0.95\columnwidth]{graphs/py_graph/latency-f2fs}
-    \caption{F2FS latency}
+    \caption{}
     \label{f:f2fs_latency}
 \end{figure}
 
@@ -134,6 +136,7 @@ Rather, the ability to work with a smaller snapshot size presents a greater adva
 	\caption{Dynamic Score-EXT4}
 	\label{f:ext4_dynamic}
 \end{figure}
+
 
 \begin{figure}[t]
     \centering

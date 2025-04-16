@@ -51,10 +51,10 @@ Through our research, we aim to facilitate the rapid creation of aged SSDs for f
 % NVMeVirt는 소프트웨어로 정의된 NVMe 장치로, 리눅스 커널 모듈로 구현되어 있으며, 기존 NVMe 인터페이스를 사용하여 다양한 저장 장치를 모방하는 기능을 제공합니다.
 % 주 목적은 고급 저장 장치를 개발하고 연구할 수 있는 환경을 제공하는 것으로, 실제 저장 장치와 유사한 방식으로 동작하게 됩니다.
 
-As our idea is implemented using NVMeVirt~\cite{nvmevirt,empowering:tos23}, we first provide a brief overview of NVMeVirt.
+As our idea is implemented using NVMeVirt~\cite{nvmevirt,empowering:tos23}, we first provide a brief overview of NVMeVirt internals.
 NVMeVirt is a storage device emulator capable of presenting various NVMe device types.
 Unlike other emulators, NVMeVirt emulates devices by processing NVMe commands at the PCIe level, thereby offering a flexible and realistic environment for evaluating diverse storage devices.
-Currently, NVMeVirt supprots conventional SSDs, NVM SSDs, key-value SSDs, zoned namespace (ZNS) SSDs, and flexible data placement (FDP) SSDs.
+Currently, NVMeVirt supprots conventional SSDs, NVM SSDs, key-value SSDs, zoned namespace (ZNS) SSDs.
 
 
 % development => How Work?
@@ -71,7 +71,8 @@ Currently, NVMeVirt supprots conventional SSDs, NVM SSDs, key-value SSDs, zoned 
 
 NVMeVirt is implemented as a Linux kernel module and consists of of several components.
 The internal architecture is illustrated in Figure~\ref{fig:structure}.
-To accurately reflect the inherent parallelism of modern SSDs, NVMeVirt is comprised of multiple FTL instances, each emulating the full hierarchy of core storage hardware components such as PCIe links, channels, dies, blocks, and pages.
+To accurately reflect the inherent parallelism of modern SSDs, NVMeVirt is comprised of multiple FTL instances.
+Each FTL instance takes charge of a part of LBA space, emulating the full hierarchy of core storage hardware components such as PCIe links, channels, dies, blocks, and pages.
 NVMeVirt models realistic data processing by coordinating the abstraction of channels and dies.
 Inbound data transferred over the PCIe link is first buffered in a write buffer, then dispatched to the appropriate FTL instance.
 Each FTL instance handles I/O requests in parallel across multiple NAND channels and dies.
@@ -92,19 +93,19 @@ Each FTL instance handles I/O requests in parallel across multiple NAND channels
 \end{figure}
 
 % Initialization
-Figure~\ref{fig:making} illustrates the process by which NVMeVirt instantiates virtual devices.
+Figure~\ref{fig:making} illustrates the process through which NVMeVirt instantiates virtual devices.
 During system initialization, a portion of physical memory range is reserved.
 The reserved memory can later be assigned to virtual devices during instantiation.
 Users can create a device instance by specifying the device type and the memory range to assign via the sysfs interface.
 The information is passed to the NVMeVirt module, which triggers a PCIe bus scan with an appropriate PCIe configuration header.
 This process effectively create an instance of NVMe device of the specified type.
-The device instance is visible to the system as if it were an actual device.
+The device instance is visible to the system as if it is an actual device.
 
 
 % Space
 The assigned memory is utilized in a device type-specific manner.
-For many device types, such as conventional SSDs, NVM SSDs, ZNS SSDs, and FDP SSDs, most of the reserved memory is used to store user data.
-Specifically, the physical memory range is directly corresponds to the LBA space of the emulating device.
+For many device types, such as conventional SSDs, NVM SSDs, and ZNS SSDs, most of the reserved memory is used to store user data.
+Specifically, a physical memory range is directly corresponds to the LBA space of the emulating device.
 On top of the LBA space, each device type-specific FTL emulates the physical data layout, mapping LBNs to physical addresses.
 During this process, the FTL models the device performance by computing the time required to complete each I/O request.
 
@@ -161,10 +162,15 @@ Furthermore, leveraging NVMeVirt offers the additional advantage of direct acces
     \label{fig:mappingtable}
 \end{figure*}
 
-Our idea is that as NVMeVirt emulates virtual devices in software, we can make a snapshot of storage device by storing information in NVMeVirt.
-To this end, four main types of data should be retrieved to make the snapshot from an aged SSD.
+% Introduction
+NVMeVirt emulates virtual devices entirely in software.
+Our approach takes advantage of this by creating a snapshot of an aged device instance, which includes both user data and internal state information.
+The Later, the instance can be fully restored by \emph{pouring} the snapshot into a newly created NVMeVirt instance, effectively recreating the aged state.
+To enable this, four main types of data must be cpatured from the original instance to form a complete snapshot.
+
+
 % 1. Mapping information
-First, the \emph{metadata of the SSD related to the FTL} must be obtained.
+First, the \emph{mapping information} must be obtained.
 Unlike actual SSDs, the FTL in NVMeVirt primarily performs the task of calculating request times.
 When storing data in actual storage, it uses logical block addresses (LBAs) instead of physical page addresses (PPAs), eliminating the need to convert LBA to PPA for disk I/O assistance.
 Instead, as shown in Figure \ref{fig:mappingtable}, the LBA is abstractly related to the PPA, and the expected request time is calculated so that the time taken to store or read data matches the computed request time.
@@ -179,7 +185,8 @@ Therefore, it is necessary to store the mapping table, reverse mapping table.
     \label{fig:role}
 \end{figure}
 
-% 2. Block metadata
+
+% 2. Block metadata / block status
 Second, we need to bring the \emph{Free Block list, Full Block list, and Victim Block queue} that manage the Free and Full blocks.
 The state of an SSD's blocks is divided into two categories: Full Blocks, which are completely written, and Free Blocks, which are empty.
 The FTL manages these blocks in list form.
@@ -213,16 +220,20 @@ To obtain the contents of the storage, it is necessary to copy from the starting
 
 \subsubsection{Processing Save and Load}
 
-To maintain the data mentioned in Section 3.3.1 in the new SSD, it must be saved to external files and then loaded into the new SSD.
+% Introduction
+To maintain the data, it must be saved to external files and then loaded into the new SSD.
+
+%
 However, since NVMeVirt is a kernel module, this requires reading from and writing to files in User Space from the kernel space.
 Generally, reading and writing files from kernel space to User Space is not recommended due to reasons such as kernel protection and over-reliance on User Space.
 Nonetheless, in this research, the advantages gained from reading and writing files from kernel space outweigh the drawbacks, so we proceeded with this approach.
 
 
-As mentioned in Section 3.3.1, the data that needs to be preserved includes the FTL metadata, block lists, SSD storage metadata, and contents.
+The data that needs to be preserved includes the FTL metadata, block lists, SSD storage metadata, and contents.
 Instead of managing these in multiple files, we opted to store them in a single file for convenience in later distribution and SSD aging creation.
 The functions used for reading and writing to the file are \texttt{Kernel\_Write()} and \texttt{Kernel\_Read()}.
 
+% 1. block lists
 There are two key points to highlight.
 First is the block lists.
 The FTL manages blocks in list form.
@@ -233,6 +244,7 @@ Care must also be taken during loading; in the new SSD, all blocks exist in a Fr
 Even if multiple read and write operations have been conducted on the new SSD, the blocks included in the Free Block List and Full Block List will differ from those in the aged SSD.
 Therefore, all lists must be initialized before loading.
 
+% 2. data
 The second point is the storage data saving process.
 While the storage may contain contents across all ranges, it may also have empty spaces.
 If we were to save the entire range of the storage to the file, it could include empty spaces, making it inefficient.
@@ -242,7 +254,7 @@ The mapping table is stored in an array format, with the index representing the 
 NVMeVirt uses the LPN to store data in the storage and can verify whether data is stored in a given page using the PPA.
 Therefore, by traversing the mapping table, we check whether data is stored in the page via the PPA, and if it is, we save the page's size to the file using the LPN.
 
-
+% Loading
 The loading process also utilizes the mapping table.
 Similarly, since the data for the mapping table is saved and loaded together with the file, we can confirm the pages using the PPA and attempt to load the data into storage using the LPN.
 This approach allows us to avoid storing unnecessary data, thereby reducing the file size for distribution and saving time.
