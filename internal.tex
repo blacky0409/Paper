@@ -220,18 +220,17 @@ To obtain the contents of the storage, it is necessary to copy from the starting
 
 \subsubsection{Processing Save and Load}
 
-% Introduction
+% Introduction: we need to dump data
 To maintain the data, it must be saved to external files and then loaded into the new SSD.
-
 %
-However, since NVMeVirt is a kernel module, this requires reading from and writing to files in User Space from the kernel space.
-Generally, reading and writing files from kernel space to User Space is not recommended due to reasons such as kernel protection and over-reliance on User Space.
+However, since NVMeVirt is a kernel module, this requires reading from and writing to files in user space from the kernel space.
+Generally, reading and writing files from kernel space to user space is not recommended due to reasons such as kernel protection and over-reliance on User Space.
 Nonetheless, in this research, the advantages gained from reading and writing files from kernel space outweigh the drawbacks, so we proceeded with this approach.
-
 
 The data that needs to be preserved includes the FTL metadata, block lists, SSD storage metadata, and contents.
 Instead of managing these in multiple files, we opted to store them in a single file for convenience in later distribution and SSD aging creation.
-The functions used for reading and writing to the file are \texttt{Kernel\_Write()} and \texttt{Kernel\_Read()}.
+The functions used for reading and writing to the file are \cc{kernel\_write()} and \cc{kernel\_read()}.
+
 
 % 1. block lists
 There are two key points to highlight.
