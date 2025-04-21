@@ -14,40 +14,33 @@
 
 
 \begin{comment}
-초반 - 실험 환경 설명 Eval Setup
+초반 - 실험 환경 설명 
+1. free space 측정방법
+2. grep test => filesystem aging과 똑같은데.. 괜찮나..? => 그냥 스며들도록?
+3. dynamic layout score => 일단은 스며들도록..
+4. Git workload
+5. RocksDB workload
+6. Eval Setup
 
-들어가야 하는 내용 :
-  1. 실제로 노화가 영향을 주나? => latency과 dynamic score를 비교하며, dynamic score과 반비례하여 latency가 증가한다.
-								 왜 이런 결과가 나오는지? fragmentation 때문인데, 이걸 그림과 대조하며 설명.
-								 근데 어떤 그림을 사용해야 할지 고민됨.
+실험 결과
+1. 실제로 노화가 영향을 주나? ext4만 사용하여
+			=> latency과 dynamic score를 비교하며, dynamic score과 반비례하여 latency가 증가한다.
+			왜 이런 결과가 나오는지? fragmentation 때문인데, 이걸 그림과 대조하며 설명.
+			근데 어떤 그림을 사용해야 할지 고민됨.
+==> 결론적으로, 아직은 fragmentation문제는 여전하기 때문에, snapshot으로 쉽게 쉽게 하자
 
-  2. dump하는데 필요한 저장공간 => 그래서 update된 storage부분만 snapshot뜨기로 함. => 이건 어느정도?
+2. compare file system => ..? ext4랑 F2FS간 비교를 해야하는데..
+=> free space 쪽 그림 바꿔보자
+
+3. dump하는데 필요한 저장공간 => 그래서 update된 storage부분만 snapshot뜨기로 함. => 이건 어느정도?
  	 전체 storage를 dump vs update된 storage만 dump 했을 때의 시간 차이
 	 => 큰 차이는 없고 데이터 배치에 따라 결과값이 달라짐.
 	 => 굳이 따지면 save는 update된 storage만 dump하는게 조금떠 빠르고 load는 느리게 관측됨
 	 => 왜지..?
 
 
+
 \end{comment}
-
-
-
-We evaluated using several workloads to aging the stroage system.
-%  Git workload
-The Git aging benchmark\cite{conway:login17,senescence:fast17} can incur aging in a real-world environment that people commonly use.
-Git is a distributed version control system that allows synchronization of source code changes.
-This benchmark generates workloads by simulating developers working on collaborative projects using Git.
-Experiments are conducted using the git pull command, which creates new source files, deletes old files, or modifies files. During this process, Git maintains its internal data structure, leading to filesystem aging.
-To measure the extent of aging, multiple git pull commands can be executed, and latency can be measured through reads using grep.
-
-% ext4 workload
-
-% f2fs workload
-
-% rocksdb workload
-
-% what is dynamic score
-
 
 % Setup
 \subsection{Evaluation Environment}
@@ -57,9 +50,103 @@ To measure the extent of aging, multiple git pull commands can be executed, and 
 => nvmevirt가 구현된 커널 스펙
 => Line of code
 \end{comment}
-I need to Write..
+
+
+We evaluated using two workloads to aging the stroage system.
+%  Git workload
+The Git aging benchmark\cite{conway:login17,senescence:fast17} can incur aging in a real-world environment that people commonly use.
+Git is a distributed version control system that allows synchronization of source code changes.
+This benchmark generates workloads by simulating developers working on collaborative projects using Git.
+Experiments are conducted using the git pull command, which creates new source files, deletes old files, or modifies files. During this process, Git maintains its internal data structure, leading to filesystem aging.
+To measure the extent of aging, multiple git pull commands can be executed, and latency can be measured through reads using grep.
+
+% rocksdb workload
+
+
+% ext4 file system
+
+
+% f2fs file system
+
 
 % Aging affects the performance of storage
+\subsection{Aging affects the performance of storage}
+\begin{comment}
+1. dynamic score를 소개
+2. free_block말하면서 free block size가 작아짐을 언급
+=> 다른 fragmentation도 소개하고 싶은데..
+3. latency를 소개하며, dynamic score와 반비례하게 증가함을 언급
+\end{comment}
+
+
+\begin{figure}[t]
+    \centering
+	\includegraphics[width=0.95\columnwidth]{graphs/ext4_dynamic}
+	\caption{Dynamic Score-EXT4}
+	\label{f:ext4_dynamic}
+\end{figure}
+
+\begin{figure}[t]
+    \centering
+	\includegraphics[width=0.95\columnwidth]{graphs/f2fs_vs_ext4_dynamic}
+	\caption{Dynamic Score-F2FS vs EXT4}
+	\label{f:f2fs_vs_ext4_dynamic}
+\end{figure}
+
+Figures~\ref{f:ext4_dynamic} measure the dynamic layout score for SQLite, Git, and RocksDB workloads when the filesystem is Ext4.
+As shown in the graph, the score decreases as aging progresses, indicating convergence.
+The phenomenon of the dynamic layout score decreasing with aging is not exclusive to Ext4.
+Figures~\ref{f:f2fs_vs_ext4_dynamic} compare the differences between the Ext4 and F2FS filesystems when the workload is SQLite.
+F2FS also exhibits a similar decrease in the dynamic layout score, just like Ext4.
+The dynamic layout score is a value obtained by observing the I/O requests of the filesystem using blktrace and measuring the ratio of contiguous blocks among the requested blocks.
+A lower dynamic layout score indicates lower locality of data and metadata, which suggests that fragmentation has occurred significantly in the storage~\cite{senescence:fast17}
+
+
+\begin{figure}[t]
+    \centering
+	\includegraphics[width=0.95\columnwidth]{graphs/free_block_git}
+	\caption{Free Block-GIT}
+	\label{f:free_block_git}
+\end{figure}
+
+\begin{figure}[t]
+    \centering
+	\includegraphics[width=0.95\columnwidth]{graphs/free_block_rocksdb}
+	\caption{Free Block-RockDB}
+	\label{f:free_block_rocksdb}
+\end{figure}
+In our experiment, we also observed fragmentation in the storage.
+Figure~\ref{f:free_block_git,f:free_block_rocksdb} shows the observations for the file system when it is Ext4, specifically for the Git and RocksDB workloads.
+In both experiments, before aging occurred, the free block sizes were concentrated at 2G and 1G.
+However, as aging progressed, the 128M free blocks became the most prevalent, and particularly in the Git workload, free blocks of size 8K were also observed.
+This indicates that after aging, the free blocks in the storage became physically dispersed, resulting in the presence of smaller free block sizes compared to before.
+\begin{comment}
+i want write other fragmentation.
+intrfile fragmentation, interfile fragmentation...
+\end{comment}
+
+
+\begin{figure}[t]
+    \centering
+	\includegraphics[width=0.95\columnwidth]{graphs/ext_latency}
+	\caption{Latency-EXT4}
+	\label{f:ext_latency}
+\end{figure}
+
+\begin{figure}[t]
+    \centering
+	\includegraphics[width=0.95\columnwidth]{graphs/f2fs_vs_ext4_latency}
+	\caption{Latency-EXT4 vs F2FS}
+	\label{f:f2fs_vs_ext4_latency}
+\end{figure}
+
+We have observed that such fragmentation can affect storage performance.
+Figure~\ref{f:ext_latency} shows the results of the Grep test conducted in an Ext4 file system environment.
+The grep test represents the wall-clock time required to perform a recursive grep in the root directory of the file system.
+It demonstrates an increase Grep latency across all workloads.
+This is inversely proportional to the results shown by the Dynamic Layout Score.
+The Figure~\ref{f:f2fs_vs_ext4_latency} not only in the Ext4 environment but also in the F2FS environment shows the same results.
+Still, it indicates that fragmentation in storage has a negative impact on storage performance.
 
 % comparison snapshot latency
 \subsection{Comparison Snapshot Latency}
@@ -138,28 +225,6 @@ Rather, the ability to work with a smaller snapshot size presents a greater adva
 	\label{f:continuous_free_segment_fsfs}
 \end{figure}
 
-\begin{figure}[t]
-    \centering
-	\includegraphics[width=0.95\columnwidth]{graphs/ext4_dynamic}
-	\caption{Dynamic Score-EXT4}
-	\label{f:ext4_dynamic}
-\end{figure}
-
-
-\begin{figure}[t]
-    \centering
-	\includegraphics[width=0.95\columnwidth]{graphs/ext_latency}
-	\caption{Latency-EXT4}
-	\label{f:ext_latency}
-\end{figure}
-
-\begin{figure}[t]
-    \centering
-	\includegraphics[width=0.95\columnwidth]{graphs/f2fs_vs_ext4_dynamic}
-	\caption{Dynamic Score-F2FS vs EXT4}
-	\label{f:f2fs_vs_ext4_dynamic}
-\end{figure}
-
 
 \begin{figure}[t]
     \centering
@@ -217,19 +282,6 @@ Rather, the ability to work with a smaller snapshot size presents a greater adva
 	\label{f:free_block_ext4}
 \end{figure}
 
-\begin{figure}[t]
-    \centering
-	\includegraphics[width=0.95\columnwidth]{graphs/free_block_git}
-	\caption{Free Block-GIT}
-	\label{f:free_block_git}
-\end{figure}
-
-\begin{figure}[t]
-    \centering
-	\includegraphics[width=0.95\columnwidth]{graphs/free_block_rocksdb}
-	\caption{Free Block-RockDB}
-	\label{f:free_block_rocksdb}
-\end{figure}
 
 \begin{figure}[t]
     \centering
